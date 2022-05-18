@@ -1,22 +1,26 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SchoolManagementApp.Infrastructure;
+using Shared.Application.Mediator;
+using Shared.Application.Mediators;
+using Shared.Domain.Entities;
+using Shared.Infrastructure;
+using Shared.Infrastructure.Repositories;
+using UserManagement.Infrastructure;
 
 namespace SchoolManagementAppApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment env)
         {
-            Configuration = configuration;
+            var environment = env.IsDevelopment() ? "Development" : "Production";
+            Configuration = new ConfigurationBuilder()
+                .AddJsonFile($"appsettings.{environment}.json")
+                .Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -24,6 +28,25 @@ namespace SchoolManagementAppApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            var connectionString = Configuration.GetValue<string>("DefaultConnection");
+
+            services.AddUserManagementModule(connectionString);
+
+            services.AddCoreModule(connectionString);
+
+            services.AddMigrationService(connectionString);
+
+            services.AddScoped<IMediator, Mediator>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "School Management App API",
+                    Version = "V1"
+                });
+            });
 
             services.AddControllers();
         }
@@ -36,14 +59,25 @@ namespace SchoolManagementAppApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
+
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
+            //app.UseSwaggerUI(c =>
+            //{
+            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            //});
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            app.RunMigration();
         }
     }
 }

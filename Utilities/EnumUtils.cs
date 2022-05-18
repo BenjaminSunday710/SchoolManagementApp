@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Utilities
 {
@@ -14,7 +10,6 @@ namespace Utilities
             var descriptionAttribute = value.GetAttribute<DescriptionAttribute>();
             return descriptionAttribute == null ? value.ToString() : descriptionAttribute.Description;
         }
-
 
         private static T GetAttribute<T>(this Enum value) where T : Attribute
         {

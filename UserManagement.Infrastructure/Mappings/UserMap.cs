@@ -3,7 +3,7 @@ using UserManagement.Domain.Users;
 
 namespace UserManagement.Infrastructure.Mappings
 {
-    public class UserMap : BaseMap<int,User>
+    public class UserMap : BaseMap<int, User>
     {
         public UserMap()
         {

@@ -3,7 +3,7 @@ using UserManagement.Domain.Roles;
 
 namespace UserManagement.Infrastructure.Mappings
 {
-    public class RolePermissionMap:BaseMap<int,RolePermission>
+    public class RolePermissionMap : BaseMap<int, RolePermission>
     {
         public RolePermissionMap()
         {

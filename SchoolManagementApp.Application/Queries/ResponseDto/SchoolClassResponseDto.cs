@@ -1,9 +1,11 @@
-﻿namespace SchoolManagementApp.Application.Queries.ResponseDto
+﻿using System;
+
+namespace SchoolManagementApp.Application.Queries.ResponseDto
 {
     public class SchoolClassResponseDto
     {
         public string Name { get; set; }
-        public int SchoolId { get; set; }
-        public int ClassTeacherId { get; set; }
+        public Guid SchoolId { get; set; }
+        public Guid ClassTeacherId { get; set; }
     }
 }

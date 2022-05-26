@@ -1,4 +1,5 @@
 ﻿using Shared.Application.ArchitectureBuilder.Commands;
+using System;
 using Utilities.Result.Util;
 using Utilities.Validations;
 
@@ -10,11 +11,11 @@ namespace SchoolManagementApp.Application.Commands.SchoolClasses.CreateSchoolCla
         {
             return new FluentValidator()
                 .IsValidText(Name, "Invalid class name")
-                .IsValidInt(SchoolId, "Invalid school Id")
+                .IsValidGuid(SchoolId, "Invalid school Id")
                 .Result;
         }
 
-        public int SchoolId { get; set; }
+        public Guid SchoolId { get; set; }
         public string Name { get; set; }
     }
 }

@@ -4,9 +4,9 @@ namespace SchoolManagementApp.Domain.SharedKernel.Persons
 {
     public enum Gender
     {
-        [Description("male")]
+        [Description("Male")]
         Male,
-        [Description("female")]
+        [Description("Female")]
         Female
     }
 }

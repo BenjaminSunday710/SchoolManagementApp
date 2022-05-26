@@ -1,10 +1,11 @@
 ﻿using Shared.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using UserManagement.Domain.Roles;
 
 namespace UserManagement.Domain.Permissions
 {
-    public class Permission:BaseEntity<int>
+    public class Permission:BaseEntity<Guid>
     {
         protected Permission() { }
 
@@ -13,22 +14,9 @@ namespace UserManagement.Domain.Permissions
             Name = name;
         }
 
-        protected internal virtual void AddRole(RolePermission role)
-        {
-            role.Permission = this;
-            _roles.Add(role);
-        }
-
-        protected internal virtual void RemoveRole(RolePermission role)
-        {
-            role.Permission = null;
-            _roles.Remove(role);
-        }
-
         public virtual string Name { get; protected set; }
 
-
-        private ISet<RolePermission> _roles = new HashSet<RolePermission>();
-        public virtual IEnumerable<RolePermission> Roles => _roles;
+        private ISet<Role> _roles = new HashSet<Role>();
+        public virtual IEnumerable<Role> Roles => _roles;
     }
 }

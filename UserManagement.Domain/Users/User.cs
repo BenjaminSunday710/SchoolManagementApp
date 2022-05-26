@@ -1,29 +1,28 @@
 ﻿using Shared.Domain.Entities;
+using System;
 using System.Collections.Generic;
+using UserManagement.Domain.Roles;
 
 namespace UserManagement.Domain.Users
 {
-    public class User:BaseEntity<int>
+    public class User:BaseEntity<Guid>
     {
         protected User() { }
 
-        public User(string firstName, string lastName, string email, string password)
+        public User(string firstName, string lastName, string email)
         {
             FirstName = firstName;
             LastName = lastName;
             Email = email;
-            Password = password;
         }
 
-        protected internal virtual void AssignRole(UserRole role)
+        public virtual void AssignRole(Role role)
         {
-            role.User = this;
             _roles.Add(role);
         }
 
-        protected internal virtual void ResignRole(UserRole role)
+        public virtual void ResignRole(Role role)
         {
-            role.DetachUser();
             _roles.Remove(role);
         }
 
@@ -32,7 +31,7 @@ namespace UserManagement.Domain.Users
         public virtual string Email { get; set; }
         public virtual string Password { get; set; }
 
-        private ISet<UserRole> _roles = new HashSet<UserRole>();
-        public virtual IEnumerable<UserRole> Roles => _roles;
+        private ISet<Role> _roles = new HashSet<Role>();
+        public virtual IEnumerable<Role> Roles => _roles;
     }
 }

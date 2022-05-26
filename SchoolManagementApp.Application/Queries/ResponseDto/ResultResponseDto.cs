@@ -1,10 +1,11 @@
 ﻿using SchoolManagementApp.Domain.Results;
+using System;
 
 namespace SchoolManagementApp.Application.Queries.ResponseDto
 {
     public class ResultResponseDto
     {
-        public int ClassId { get; set; }
+        public Guid ClassId { get; set; }
         public string Session { get; set; }
         public Term Term { get; set; }
         public double ContinuousAssessment { get; set; }

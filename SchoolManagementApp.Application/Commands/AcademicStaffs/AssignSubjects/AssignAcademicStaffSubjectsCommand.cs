@@ -1,4 +1,5 @@
 ﻿using Shared.Application.ArchitectureBuilder.Commands;
+using System;
 using System.Collections.Generic;
 using Utilities.Result.Util;
 using Utilities.Validations;
@@ -10,12 +11,12 @@ namespace SchoolManagementApp.Application.Commands.AcademicStaffs.AssignSubjects
         protected override ActionResult Validate()
         {
             return new FluentValidator()
-                .IsValidInt(StaffId, "invalid staff Id")
+                .IsValidGuid(StaffId, "invalid staff Id")
                 .IsValidCollection(SubjectsIds, "invalid subjects Ids")
                 .Result;
         }
 
-        public int StaffId { get; set; }
-        public IEnumerable<int> SubjectsIds { get; set; }
+        public Guid StaffId { get; set; }
+        public IEnumerable<Guid> SubjectsIds { get; set; }
     }
 }

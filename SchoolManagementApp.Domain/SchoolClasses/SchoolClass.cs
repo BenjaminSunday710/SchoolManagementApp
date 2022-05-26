@@ -4,11 +4,12 @@ using SchoolManagementApp.Domain.Schools;
 using SchoolManagementApp.Domain.Students;
 using SchoolManagementApp.Domain.Subjects;
 using Shared.Domain.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace SchoolManagementApp.Domain.SchoolClasses
 {
-    public class SchoolClass:BaseEntity<int>
+    public class SchoolClass:BaseEntity<Guid>
     {
         protected SchoolClass() { }
         public SchoolClass(string name, School school)

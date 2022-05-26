@@ -22,15 +22,13 @@ namespace SchoolManagementApp.Infrastructure.Context
         public override void Setup(ISession session)
         {
             _session = session;
-            SchoolRepository = new Repository<School, int>(session);
-            SchoolClassRepository = new Repository<SchoolClass, int>(session);
-            SubjectRepository = new Repository<Subject, int>(session);
-            StudentRepository = new Repository<Student, int>(session);
-            StudentSubjectRepository = new Repository<StudentSubject, int>(session);
-            AcademicStaffRepository = new Repository<AcademicStaff, int>(session);
-            AcademicStaffSubjectRepository = new Repository<AcademicStaffSubject, int>(session);
-            NonAcademicStaffRepository = new Repository<NonAcademicStaff, int>(session);
-            ResultRepository = new Repository<Result, int>(session);
+            SchoolRepository = new Repository<School, Guid>(session);
+            SchoolClassRepository = new Repository<SchoolClass, Guid>(session);
+            SubjectRepository = new Repository<Subject, Guid>(session);
+            StudentRepository = new Repository<Student, Guid>(session);
+            AcademicStaffRepository = new Repository<AcademicStaff, Guid>(session);
+            NonAcademicStaffRepository = new Repository<NonAcademicStaff, Guid>(session);
+            ResultRepository = new Repository<Result, Guid>(session);
         }
 
         public async override Task<ActionResult> CommitAsync()
@@ -49,15 +47,13 @@ namespace SchoolManagementApp.Infrastructure.Context
             }
         }
 
-        public IRepository<School,int> SchoolRepository { get; private set; }
-        public IRepository<SchoolClass,int> SchoolClassRepository { get; private set; }
-        public IRepository<Subject,int> SubjectRepository { get; private set; }
-        public IRepository<Student,int> StudentRepository { get; private set; }
-        public IRepository<StudentSubject,int> StudentSubjectRepository { get; private set; }
-        public IRepository<AcademicStaff,int> AcademicStaffRepository { get; private set; }
-        public IRepository<AcademicStaffSubject,int> AcademicStaffSubjectRepository { get; private set; }
-        public IRepository<NonAcademicStaff,int> NonAcademicStaffRepository { get; private set; }
-        public IRepository<Result,int> ResultRepository { get; private set; }
+        public IRepository<School, Guid> SchoolRepository { get; private set; }
+        public IRepository<SchoolClass, Guid> SchoolClassRepository { get; private set; }
+        public IRepository<Subject, Guid> SubjectRepository { get; private set; }
+        public IRepository<Student, Guid> StudentRepository { get; private set; }
+        public IRepository<AcademicStaff, Guid> AcademicStaffRepository { get; private set; }
+        public IRepository<NonAcademicStaff, Guid> NonAcademicStaffRepository { get; private set; }
+        public IRepository<Result, Guid> ResultRepository { get; private set; }
        
     }
 }

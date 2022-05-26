@@ -1,4 +1,5 @@
 ﻿using Shared.Application.ArchitectureBuilder.Commands;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace UserManagement.Application.Commands.Roles.AssignPermissions
             if (role == null) return OperationResult.Failed($"role with id-{command.RoleId} does not exist");
             response = new CommandResponse(role.Id);
             await AssignPermissions(role, command.PermissionIds);
+            await Context.RoleRepository.UpdateAsync(role, role.Id);
 
             var commitStatus = await Context.CommitAsync();
             if (commitStatus.NotSuccessful) OperationResult.Failed("unable to assign permissions");
@@ -23,17 +25,13 @@ namespace UserManagement.Application.Commands.Roles.AssignPermissions
             return OperationResult.Successful(response);
         }
 
-        private async Task AssignPermissions(Role role, IEnumerable<int> permissionIds)
+        private async Task AssignPermissions(Role role, IEnumerable<Guid> permissionIds)
         {
             foreach (var permissionId in permissionIds)
             {
                 var permission = await Context.PermissionRepository.GetByIdAsync(permissionId);
                 if (permission == null) response.NotifyInvalidItems($"{permissionId} is invalid permission Id");
-                else
-                {
-                    var rolePermission = new RolePermission(role, permission);
-                    await Context.RolePermissionRepository.AddAsync(rolePermission);
-                }
+                else role.AssignPermission(permission);
             }
         }
 

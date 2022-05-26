@@ -1,9 +1,10 @@
 ﻿using SchoolManagementApp.Domain.Students;
 using Shared.Infrastructure.Mappings;
+using System;
 
 namespace SchoolManagementApp.Infrastructure.Mappings
 {
-    public class StudentMap: BaseMap<int, Student>
+    public class StudentMap: BaseMap<Guid, Student>
     {
         public StudentMap()
         {
@@ -24,7 +25,7 @@ namespace SchoolManagementApp.Infrastructure.Mappings
                 });
             References(x => x.School);
             References(x => x.SchoolClass);
-            HasMany(x => x.Subjects).Inverse().Cascade.AllDeleteOrphan();
+            HasManyToMany(x => x.Subjects).Cascade.All().Table("StudentSubjects");
             HasMany(x => x.Results).Inverse().Cascade.AllDeleteOrphan();
         }
     }

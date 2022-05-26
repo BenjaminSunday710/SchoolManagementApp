@@ -2,16 +2,13 @@
 using SchoolManagementApp.Domain.Results;
 using Shared.Application.ArchitectureBuilder.Queries;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Queries.Results.FetchResult
 {
-    public class FetchResultQueryHandler : QueryHandler<Result, int, ResultResponseDto, FetchResultQuery>
+    public class FetchResultQueryHandler : QueryHandler<Result, Guid, ResultResponseDto, FetchResultQuery>
     {
         public async override Task<ActionResult<ResultResponseDto>> HandleAsync(FetchResultQuery query, CancellationToken cancellationToken = default)
         {

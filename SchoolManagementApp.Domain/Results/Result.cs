@@ -2,10 +2,11 @@
 using SchoolManagementApp.Domain.Students;
 using SchoolManagementApp.Domain.Subjects;
 using Shared.Domain.Entities;
+using System;
 
 namespace SchoolManagementApp.Domain.Results
 {
-    public class Result:BaseEntity<int>
+    public class Result:BaseEntity<Guid>
     {
         protected internal Result() { }
 

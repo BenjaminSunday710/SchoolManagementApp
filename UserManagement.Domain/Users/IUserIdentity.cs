@@ -7,6 +7,6 @@ namespace UserManagement.Domain.Users
     {
         string Email { get; set; }
         int UserId { get; set; }
-        IEnumerable<UserRole> Roles { get; set; }
+        IEnumerable<string> Roles { get; set; }
     }
 }

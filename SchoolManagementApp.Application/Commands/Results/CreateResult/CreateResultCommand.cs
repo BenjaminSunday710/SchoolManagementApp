@@ -1,5 +1,6 @@
 ﻿using SchoolManagementApp.Domain.Results;
 using Shared.Application.ArchitectureBuilder.Commands;
+using System;
 using Utilities.Result.Util;
 using Utilities.Validations;
 
@@ -10,9 +11,9 @@ namespace SchoolManagementApp.Application.Commands.Results.CreateResult
         protected override ActionResult Validate()
         {
             return new FluentValidator()
-                .IsValidInt(StudentId, "invalid student Id")
-                .IsValidInt(SubjectId, "invalid subject Id")
-                .IsValidInt(SchoolClassId, "invalid school class Id")
+                .IsValidGuid(StudentId, "invalid student Id")
+                .IsValidGuid(SubjectId, "invalid subject Id")
+                .IsValidGuid(SchoolClassId, "invalid school class Id")
                 .IsValidText(Session, "invalid session")
                 .IsValidText(Term.ToString(), "invalid term")
                 .IsValidDouble(ContinuousAssessment, "invalid Continuous Assessment score")
@@ -22,9 +23,9 @@ namespace SchoolManagementApp.Application.Commands.Results.CreateResult
                 .Result;
         }
 
-        public  int StudentId { get; set; }
-        public  int SubjectId { get; set; }
-        public  int SchoolClassId { get; set; }
+        public Guid StudentId { get; set; }
+        public Guid SubjectId { get; set; }
+        public Guid SchoolClassId { get; set; }
         public  string Session { get; set; }
         public  Term Term { get; set; }
         public  double ContinuousAssessment { get; set; }

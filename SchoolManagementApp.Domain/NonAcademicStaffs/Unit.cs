@@ -1,7 +1,14 @@
-﻿namespace SchoolManagementApp.Domain.NonAcademicStaffs
+﻿using System.ComponentModel;
+
+namespace SchoolManagementApp.Domain.NonAcademicStaffs
 {
     public enum Unit
     {
-        Administrative, Service
+        [Description("Administrative")]
+        Administrative, 
+        [Description("Technical")]
+        Technical,
+        [Description("Services")]
+        Service
     }
 }

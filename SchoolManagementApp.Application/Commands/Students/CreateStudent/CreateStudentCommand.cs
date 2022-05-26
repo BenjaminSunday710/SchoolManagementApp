@@ -17,7 +17,7 @@ namespace SchoolManagementApp.Application.Commands.Students.CreateStudent
             return new FluentValidator()
                .IsValidText(FirstName, "Invalid first name")
                .IsValidText(LastName, "Invalid last name")
-               .IsValidText(House_Number, "Invalid House_Number")
+               .IsValidInt(House_Number, "Invalid House_Number")
                .IsValidText(Street, "Invalid Street")
                .IsValidText(City, "Invalid City")
                .IsValidText(LG_of_Origin, "Invalid LG_of_Origin")
@@ -25,14 +25,14 @@ namespace SchoolManagementApp.Application.Commands.Students.CreateStudent
                .IsValidEmail(Email, "Invalid email")
                .IsValidGender(Gender.ToString(), "Invalid gender")
                .IsValidText(PhoneNumber, "Invalid phone number")
-               .IsValidInt(SchoolId, "Invalid school Id")
-               .IsValidInt(SchoolClassId, "Invalid school class Id")
+               .IsValidGuid(SchoolId, "Invalid school Id")
+               .IsValidGuid(SchoolClassId, "Invalid school class Id")
                .Result;
         }
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string House_Number { get; set; }
+        public int House_Number { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
         public string Email { get; set; }
@@ -41,7 +41,7 @@ namespace SchoolManagementApp.Application.Commands.Students.CreateStudent
         public string LG_of_Origin { get; set; }
         public string State_of_Origin { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public int SchoolId { get; set; }
-        public int SchoolClassId { get; set; }
+        public Guid SchoolId { get; set; }
+        public Guid SchoolClassId { get; set; }
     }
 }

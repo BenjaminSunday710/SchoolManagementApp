@@ -1,9 +1,10 @@
 ﻿using Shared.Infrastructure.Mappings;
+using System;
 using UserManagement.Domain.Users;
 
 namespace UserManagement.Infrastructure.Mappings
 {
-    public class UserMap : BaseMap<int, User>
+    public class UserMap : BaseMap<Guid, User>
     {
         public UserMap()
         {
@@ -12,7 +13,7 @@ namespace UserManagement.Infrastructure.Mappings
             Map(x => x.LastName);
             Map(x => x.Email);
             Map(x => x.Password);
-            HasMany(x => x.Roles).Cascade.AllDeleteOrphan().Inverse();
+            HasManyToMany(x => x.Roles).Cascade.All().Table("UserRoles");
         }
     }
 }

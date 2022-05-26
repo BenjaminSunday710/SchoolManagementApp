@@ -1,4 +1,5 @@
 ﻿using Shared.Infrastructure.Context;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities.Result.Util;
@@ -13,6 +14,7 @@ namespace Shared.Application.ArchitectureBuilder.Commands
 
         public TDbContext Context { get; internal set; }
         public Operation<TResponse> OperationResult => new Operation<TResponse>();
+        public IServiceProvider ServiceProvider { get; internal set; }
     }
     
 }

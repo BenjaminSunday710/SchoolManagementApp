@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Shared.Application.ArchitectureBuilder.Commands
 {
     public class CommandResponse
     {
-        public CommandResponse(int id)
+        public CommandResponse(Guid id)
         {
             Id = id;
             InvalidItems = new List<string>();
@@ -15,7 +16,13 @@ namespace Shared.Application.ArchitectureBuilder.Commands
             InvalidItems.Add(error);
         }
 
-        public int Id { get; set; }
+        public CommandResponse NotifyInvalidItems(List<string> errors)
+        {
+            InvalidItems.AddRange(errors);
+            return this;
+        }
+
+        public Guid Id { get; set; }
         public List<string> InvalidItems { get; set; }
     }
 }

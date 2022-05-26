@@ -5,15 +5,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using SchoolManagementApp.Infrastructure;
+using SchoolManagementApp.Infrastructure.Mappings;
 using Shared.Application.Mediator;
 using Shared.Application.Mediators;
-using Shared.Domain.Entities;
 using Shared.Infrastructure;
-using Shared.Infrastructure.Repositories;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
-//using UserManagement.Infrastructure;
-//using UserManagement.Infrastructure.UserIdentity;
+using UserManagement.Infrastructure;
+using UserManagement.Infrastructure.Mappings;
+using UserManagement.Infrastructure.Security.TokenService;
 
 namespace SchoolManagementAppApi
 {
@@ -34,34 +35,44 @@ namespace SchoolManagementAppApi
         {
             var connectionString = Configuration.GetValue<string>("DefaultConnection");
 
-            //services.AddUserManagementModule(connectionString);
+            services.AddHttpContextAccessor();
 
-            services.AddCoreModule(connectionString);
+            var userMgtMapAssembly = Assembly.GetAssembly(typeof(UserMap));
+            var coreModuleMapAssembly = Assembly.GetAssembly(typeof(SchoolMap));
+
+            var mappingAssemblies = new List<Assembly>();
+            mappingAssemblies.Add(userMgtMapAssembly);
+            mappingAssemblies.Add(coreModuleMapAssembly);
+            services.AddScoped<INHibernateHelper>(x => new NHibernateHelper(connectionString, mappingAssemblies));
+
+            services.AddUserManagementModule();
+
+            //services.AddCoreModule();
 
             services.AddMigrationService(connectionString);
 
             services.AddScoped<IMediator, Mediator>();
 
-            //services.AddUserIdentity();
+            services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
-            //var jwtSettings = new JwtSettings();
-            //Configuration.GetSection("JwtSettings").Bind(jwtSettings);
+            var jwtSettings = new JwtSettings();
+            Configuration.GetSection("JwtSettings").Bind(jwtSettings);
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //    .AddJwtBearer(options =>
-            //    {
-            //        options.TokenValidationParameters = new TokenValidationParameters()
-            //        {
-            //            ValidateIssuer = true,
-            //            ValidateAudience = true,
-            //            ValidateLifetime = true,
-            //            ValidateIssuerSigningKey = true,
-            //            ValidIssuer = jwtSettings.Issuer,
-            //            ValidAudience = jwtSettings.Audience,
-            //            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
-            //        };
-            //    });
-                
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = jwtSettings.Issuer,
+                        ValidAudience = jwtSettings.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key))
+                    };
+                });
+
 
             services.AddSwaggerGen(c =>
             {
@@ -93,10 +104,6 @@ namespace SchoolManagementAppApi
 
             app.UseSwagger();
             app.UseSwaggerUI();
-            //app.UseSwaggerUI(c =>
-            //{
-            //    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            //});
 
             app.UseEndpoints(endpoints =>
             {

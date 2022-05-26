@@ -1,9 +1,11 @@
 ﻿using SchoolManagementApp.Domain.NonAcademicStaffs;
+using SchoolManagementApp.Domain.SharedKernel.Persons;
 using Shared.Infrastructure.Mappings;
+using System;
 
 namespace SchoolManagementApp.Infrastructure.Mappings
 {
-    public class NonAcademicStaffMap:BaseMap<int,NonAcademicStaff>
+    public class NonAcademicStaffMap:BaseMap<Guid, NonAcademicStaff>
     {
         public NonAcademicStaffMap()
         {
@@ -13,9 +15,9 @@ namespace SchoolManagementApp.Infrastructure.Mappings
             Map(x => x.LG_Of_Origin);
             Map(x => x.StateOfOrigin);
             Map(x => x.DateOfBirth);
-            Map(x => x.Gender);
+            Map(x => x.Gender).CustomType<GenericEnumMapper<Gender>>().Not.Nullable();
             Map(x => x.PhoneNumber);
-            Map(x => x.Unit);
+            Map(x => x.Unit).CustomType<GenericEnumMapper<Unit>>().Not.Nullable();
             Map(x => x.Designation);
             Component(x => x.Address,
                 member =>

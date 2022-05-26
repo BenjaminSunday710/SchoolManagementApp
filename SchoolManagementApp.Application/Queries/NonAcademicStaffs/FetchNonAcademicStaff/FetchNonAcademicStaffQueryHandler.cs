@@ -8,7 +8,7 @@ using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Queries.NonAcademicStaffs.FetchNonAcademicStaff
 {
-    public class FetchNonAcademicStaffQueryHandler : QueryHandler<NonAcademicStaff, int, NonAcademicStaffResponseDto, FetchNonAcademicStaffQuery>
+    public class FetchNonAcademicStaffQueryHandler : QueryHandler<NonAcademicStaff, Guid, NonAcademicStaffResponseDto, FetchNonAcademicStaffQuery>
     {
         public async override Task<ActionResult<NonAcademicStaffResponseDto>> HandleAsync(FetchNonAcademicStaffQuery query, CancellationToken cancellationToken = default)
         {

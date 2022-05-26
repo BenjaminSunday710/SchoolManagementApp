@@ -40,7 +40,7 @@ namespace Utilities.Validations
 
         public static bool IsNullOrEmpty(this Guid value)
         {
-            return value == null || value == Guid.Empty;
+            return value == Guid.Empty;
         }
     }
 }

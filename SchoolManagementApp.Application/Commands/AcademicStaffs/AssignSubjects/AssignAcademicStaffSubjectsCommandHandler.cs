@@ -20,12 +20,7 @@ namespace SchoolManagementApp.Application.Commands.AcademicStaffs.AssignSubjects
             {
                 var subject = await Context.SubjectRepository.GetByIdAsync(subjectId);
                 if (subject == null) errors.Add($"subject with Id-{subjectId} not found");
-                else
-                {
-                    var staffSubject = new AcademicStaffSubject(subject, teacher);
-                    await Context.AcademicStaffSubjectRepository.AddAsync(staffSubject);
-                    await Context.SubjectRepository.UpdateAsync(subject, subject.Id);
-                }
+                else teacher.AssignSubject(subject);
             }
             await Context.AcademicStaffRepository.UpdateAsync(teacher, teacher.Id);
 

@@ -15,9 +15,10 @@ namespace UserManagement.Application.Commands.Users.RegisterUser
             var exists = await Context.UserRepository.ExistsAsync(user => user.Email == command.Email);
             if (exists) return OperationResult.Failed($"user with email-{command.Email} already exist");
 
-            var user = new User(command.FirstName, command.LastName, command.Email, command.Password);
+            var user = new User(command.FirstName, command.LastName, command.Email);
 
             var hashedPassword = new PasswordHasher<User>().HashPassword(user, command.Password);
+            user.Password = hashedPassword;
 
             await Context.UserRepository.AddAsync(user);
 

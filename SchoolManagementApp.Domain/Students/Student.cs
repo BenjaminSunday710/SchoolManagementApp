@@ -2,6 +2,7 @@
 using SchoolManagementApp.Domain.SchoolClasses;
 using SchoolManagementApp.Domain.Schools;
 using SchoolManagementApp.Domain.SharedKernel;
+using SchoolManagementApp.Domain.Subjects;
 using System.Collections.Generic;
 
 namespace SchoolManagementApp.Domain.Students
@@ -45,32 +46,29 @@ namespace SchoolManagementApp.Domain.Students
             school.RegisterStudent(this);
         }
 
-        public virtual void OffersSubject(StudentSubject studentSubject)
+        public virtual void OffersSubject(Subject subject)
         {
-            _subjects.Add(studentSubject);
-            studentSubject.Student = this;
+            _subjects.Add(subject);
         }
 
-        public virtual void OffersManySubjects(List<StudentSubject> studentSubjects)
+        public virtual void OffersManySubjects(List<Subject> subjects)
         {
-            foreach (var subject in studentSubjects)
+            foreach (var subject in subjects)
             {
                 _subjects.Add(subject);
-                subject.Student = this;
             }
         }
 
-        public virtual void RemoveSubject(StudentSubject studentSubject)
+        public virtual void RemoveSubject(Subject subject)
         {
-            _subjects.Remove(studentSubject);
+            _subjects.Remove(subject);
         }
 
-        public virtual void RemoveManySubjects(List<StudentSubject> studentSubjects)
+        public virtual void RemoveManySubjects(List<Subject> subjects)
         {
-            foreach (var subject in studentSubjects)
+            foreach (var subject in subjects)
             {
                 _subjects.Remove(subject);
-                subject.Student = null;
             }
         }
 
@@ -105,8 +103,8 @@ namespace SchoolManagementApp.Domain.Students
         public virtual SchoolClass SchoolClass { get; set; }
         public virtual School School { get; set; }
 
-        private ISet<StudentSubject> _subjects = new HashSet<StudentSubject>();
-        public virtual IEnumerable<StudentSubject> Subjects => _subjects;
+        private ISet<Subject> _subjects = new HashSet<Subject>();
+        public virtual IEnumerable<Subject> Subjects => _subjects;
         
         private ISet<Result> _results = new HashSet<Result>();
         public virtual IEnumerable<Result> Results => _results;

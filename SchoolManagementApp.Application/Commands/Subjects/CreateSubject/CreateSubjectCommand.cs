@@ -1,4 +1,5 @@
 ﻿using Shared.Application.ArchitectureBuilder.Commands;
+using System;
 using Utilities.Result.Util;
 using Utilities.Validations;
 
@@ -9,12 +10,12 @@ namespace SchoolManagementApp.Application.Commands.Subjects.CreateSubject
         protected override ActionResult Validate()
         {
             return new FluentValidator()
-                .IsValidInt(SchoolClassId, "invalid school class Id")
+                .IsValidGuid(SchoolClassId, "invalid school class Id")
                 .IsValidText(Name, "invalid subject name")
                 .Result;
         }
 
-        public int SchoolClassId { get; set; }
+        public Guid SchoolClassId { get; set; }
         public string Name { get; set; }
     }
 }

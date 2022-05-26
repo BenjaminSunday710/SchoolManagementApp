@@ -1,9 +1,10 @@
 ﻿using SchoolManagementApp.Domain.SchoolClasses;
 using Shared.Infrastructure.Mappings;
+using System;
 
 namespace SchoolManagementApp.Infrastructure.Mappings
 {
-    public class SchoolClassMap: BaseMap<int, SchoolClass>
+    public class SchoolClassMap: BaseMap<Guid, SchoolClass>
     {
         public SchoolClassMap()
         {

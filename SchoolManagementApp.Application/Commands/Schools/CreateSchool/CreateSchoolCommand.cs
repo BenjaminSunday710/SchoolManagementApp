@@ -10,7 +10,7 @@ namespace SchoolManagementApp.Application.Commands.Schools.CreateSchool
         {
             return new FluentValidator()
                 .IsValidText(Name, "Invalid school name")
-                .IsValidText(House_Number, "Invalid house number")
+                .IsValidInt(House_Number, "Invalid house number")
                 .IsValidText(Street, "Invalid street")
                 .IsValidText(City, "Invalid city")
                 .Result;
@@ -18,7 +18,7 @@ namespace SchoolManagementApp.Application.Commands.Schools.CreateSchool
 
         public string Name { get; set; }
         public string Website { get; set; }
-        public string House_Number { get; set; }
+        public int House_Number { get; set; }
         public string Street { get; set; }
         public string City { get; set; }
     }

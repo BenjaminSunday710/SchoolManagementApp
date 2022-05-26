@@ -1,10 +1,6 @@
 ﻿using SchoolManagementApp.Domain.NonAcademicStaffs;
 using SchoolManagementApp.Domain.SharedKernel.Persons;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagementApp.Application.Queries.ResponseDto
 {
@@ -18,9 +14,9 @@ namespace SchoolManagementApp.Application.Queries.ResponseDto
         public string PhoneNumber { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
-        public string House_Number { get; set; }
+        public int House_Number { get; set; }
         public string Designation { get; set; }
         public Unit StaffUnit { get; set; }
-        public int SchoolId { get; set; }
+        public Guid SchoolId { get; set; }
     }
 }

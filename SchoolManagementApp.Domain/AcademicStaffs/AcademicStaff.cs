@@ -1,6 +1,7 @@
 ﻿using SchoolManagementApp.Domain.SchoolClasses;
 using SchoolManagementApp.Domain.Schools;
 using SchoolManagementApp.Domain.SharedKernel;
+using SchoolManagementApp.Domain.Subjects;
 using System.Collections.Generic;
 
 namespace SchoolManagementApp.Domain.AcademicStaffs
@@ -21,26 +22,24 @@ namespace SchoolManagementApp.Domain.AcademicStaffs
             PhoneNumber = person.PhoneNumber;
         }
 
-        public virtual void AssignSubject(AcademicStaffSubject staffSubject)
+        public virtual void AssignSubject(Subject subject)
         {
-            _subjects.Add(staffSubject);
-            staffSubject.Teacher = this;
+            _subjects.Add(subject);
         }
 
-        public virtual void AssignManySubjects(List<AcademicStaffSubject> staffSubjects)
+        public virtual void AssignManySubjects(List<Subject> subjects)
         {
-            staffSubjects.ForEach(staffSubject => staffSubject.Teacher = this);
-            staffSubjects.ForEach(staffSubject => _subjects.Add(staffSubject));
+            subjects.ForEach(staffSubject => _subjects.Add(staffSubject));
         }
 
-        public virtual void RemoveSubject(AcademicStaffSubject staffSubject)
+        public virtual void RemoveSubject(Subject subject)
         {
-            _subjects.Remove(staffSubject);
+            _subjects.Remove(subject);
         }
 
-        public virtual void RemoveManySubjects(List<AcademicStaffSubject> staffSubjects)
+        public virtual void RemoveManySubjects(List<Subject> subjects)
         {
-            staffSubjects.ForEach(staffSubject => _subjects.Remove(staffSubject));
+            subjects.ForEach(staffSubject => _subjects.Remove(staffSubject));
         }
 
         public virtual void AssignSchool(School school)
@@ -55,7 +54,7 @@ namespace SchoolManagementApp.Domain.AcademicStaffs
 
         public virtual SchoolClass SchoolClass { get; protected internal set; }
 
-        private ISet<AcademicStaffSubject> _subjects = new HashSet<AcademicStaffSubject>();
-        public virtual IEnumerable<AcademicStaffSubject> Subjects => _subjects;
+        private ISet<Subject> _subjects = new HashSet<Subject>();
+        public virtual IEnumerable<Subject> Subjects => _subjects;
     }
 }

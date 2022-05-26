@@ -39,7 +39,7 @@ namespace SchoolManagementApp.Domain.SharedKernel.Persons
             _dateOfBirth = dateOfBirth;
             return this;
         }
-        public PersonBuilder SetAddress(string city, string street, string house_Number)
+        public PersonBuilder SetAddress(string city, string street, int house_Number)
         {
             _address = new Address(city, street, house_Number);
             return this;
@@ -57,7 +57,7 @@ namespace SchoolManagementApp.Domain.SharedKernel.Persons
                 StateOfOrigin = _stateOfOrigin,
                 Gender = _gender,
                 PhoneNumber = _phoneNumber,
-                Created = DateTimeOffset.UtcNow,
+                Created = DateTime.UtcNow,
                 CreatedBy="Admin",
             };
         }

@@ -1,13 +1,14 @@
 ﻿using SchoolManagementApp.Application.Queries.ResponseDto;
 using SchoolManagementApp.Domain.AcademicStaffs;
 using Shared.Application.ArchitectureBuilder.Queries;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Queries.AcademicStaffs.FetchAcademicStaff
 {
-    public class FetchAcademicStaffQueryHandler : QueryHandler<AcademicStaff, int, AcademicStaffResponseDto, FetchAcademicStaffQuery>
+    public class FetchAcademicStaffQueryHandler : QueryHandler<AcademicStaff, Guid, AcademicStaffResponseDto, FetchAcademicStaffQuery>
     {
         public async override Task<ActionResult<AcademicStaffResponseDto>> HandleAsync(FetchAcademicStaffQuery query, CancellationToken cancellationToken = default)
         {

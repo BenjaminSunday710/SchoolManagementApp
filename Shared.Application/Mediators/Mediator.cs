@@ -13,10 +13,12 @@ namespace Shared.Application.Mediators
 {
     public class Mediator : IMediator
     {
-        public Mediator(INHibernateHelper nHibernateHelper)
+        public Mediator(IServiceProvider serviceProvider)
         {
-            sessionProvider = nHibernateHelper;
+            sessionProvider = (INHibernateHelper)serviceProvider.GetService(typeof(INHibernateHelper));
+            _serviceProvider = serviceProvider;
         }
+
         public async Task<ActionResult<TResponse>> ExecuteCommandAsync<TCommand, TCommandHandler,TDbContext, TResponse>(TCommand command)
             where TCommand:Command
             where TDbContext:DbContext,new()
@@ -31,6 +33,7 @@ namespace Shared.Application.Mediators
                 var session = sessionProvider.OpenSession();
                 dbContext.Setup(session);
                 handler.Context = dbContext;
+                handler.ServiceProvider = _serviceProvider;
                 return await handler.HandleAsync(command);
             }
             catch (Exception ex)
@@ -40,15 +43,15 @@ namespace Shared.Application.Mediators
         }
 
         public async Task<ActionResult<TResponse>> SendQueryAsync<TEntity,TQueryHandler, TResponse>()
-            where TEntity:BaseEntity<int>
-            where TQueryHandler : QueryHandler<TEntity, int, TResponse>
+            where TEntity:BaseEntity<Guid>
+            where TQueryHandler : QueryHandler<TEntity, Guid, TResponse>
             where TResponse : class
         {
             try
             {
                 var handler = (TQueryHandler)Activator.CreateInstance(typeof(TQueryHandler));
                 var session = sessionProvider.OpenSession();
-                handler.QueryContext = new ReadOnlyRepository<TEntity, int>(session);
+                handler.QueryContext = new ReadOnlyRepository<TEntity, Guid>(session);
                 return await handler.HandleAsync();
             }
             catch (Exception ex)
@@ -58,9 +61,9 @@ namespace Shared.Application.Mediators
         }
 
         public async Task<ActionResult<TResponse>> SendQueryAsync<TEntity,TQuery, TQueryHandler, TResponse>(TQuery query)
-            where TEntity : BaseEntity<int>
+            where TEntity : BaseEntity<Guid>
             where TQuery :Query
-            where TQueryHandler : QueryHandler<TEntity, int, TResponse, TQuery>
+            where TQueryHandler : QueryHandler<TEntity, Guid, TResponse, TQuery>
             where TResponse : class
         {
             if (!query.IsValid) return ActionResult<TResponse>.Failed();
@@ -68,7 +71,7 @@ namespace Shared.Application.Mediators
             {
                 var handler = (TQueryHandler)Activator.CreateInstance(typeof(TQueryHandler));
                 var session = sessionProvider.OpenSession();
-                handler.QueryContext = new ReadOnlyRepository<TEntity, int>(session);
+                handler.QueryContext = new ReadOnlyRepository<TEntity, Guid>(session);
                 return await handler.HandleAsync(query);
             }
             catch (Exception ex)
@@ -78,5 +81,6 @@ namespace Shared.Application.Mediators
         }
 
         private INHibernateHelper sessionProvider;
+        private IServiceProvider _serviceProvider;
     }
 }

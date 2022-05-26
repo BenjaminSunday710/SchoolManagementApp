@@ -5,8 +5,8 @@ namespace Shared.Domain.Entities
     public class AuditEntity
     {
         public virtual string CreatedBy { get; set; } = "DbAdmin";
-        public virtual DateTimeOffset Created { get; set; } = DateTimeOffset.UtcNow;
+        public virtual DateTime Created { get; set; } = DateTime.UtcNow;
         public virtual string LastModifiedBy { get; set; }
-        public virtual DateTimeOffset LastModified { get; set; }
+        public virtual DateTime LastModified { get; set; } = DateTime.UtcNow;
     }
 }

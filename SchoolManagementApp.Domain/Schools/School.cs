@@ -4,20 +4,21 @@ using SchoolManagementApp.Domain.SchoolClasses;
 using SchoolManagementApp.Domain.SharedKernel;
 using SchoolManagementApp.Domain.Students;
 using Shared.Domain.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace SchoolManagementApp.Domain.Schools
 {
-    public class School:BaseEntity<int>
+    public class School:BaseEntity<Guid>
     {
         protected School() { }
-        public School(string name,string website=null)
+        public School(string name, string website=null)
         {
             Name = name;
             Website = website;
         }
 
-        public virtual void ProvideLocation(string city, string street, string house_Number)
+        public virtual void ProvideLocation(string city, string street, int house_Number)
         {
             Location = new Address(city, street, house_Number);
         }

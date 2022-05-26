@@ -1,13 +1,14 @@
 ﻿using SchoolManagementApp.Application.Queries.ResponseDto;
 using SchoolManagementApp.Domain.Schools;
 using Shared.Application.ArchitectureBuilder.Queries;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Queries.Schools.FetchSchool
 {
-    public class FetchSchoolQueryHandler : QueryHandler<School, int, SchoolResponseDto, FetchSchoolQuery>
+    public class FetchSchoolQueryHandler : QueryHandler<School, Guid, SchoolResponseDto, FetchSchoolQuery>
     {
         public async override Task<ActionResult<SchoolResponseDto>> HandleAsync(FetchSchoolQuery query, CancellationToken cancellationToken = default)
         {

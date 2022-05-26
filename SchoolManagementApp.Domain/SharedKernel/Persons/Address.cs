@@ -6,7 +6,7 @@ namespace SchoolManagementApp.Domain.SharedKernel
     public class Address : ValueObject<Address>
     {
         protected Address() { }
-        public Address(string city, string street, string house_Number)
+        public Address(string city, string street, int house_Number)
         {
             City = city;
             Street = street;
@@ -15,7 +15,7 @@ namespace SchoolManagementApp.Domain.SharedKernel
 
         public virtual string City { get; }
         public virtual string Street { get; }
-        public virtual string House_Number { get; }
+        public virtual int House_Number { get; }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

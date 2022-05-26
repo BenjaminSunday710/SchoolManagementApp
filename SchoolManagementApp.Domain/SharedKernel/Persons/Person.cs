@@ -4,7 +4,7 @@ using System;
 
 namespace SchoolManagementApp.Domain.SharedKernel
 {
-    public class Person:BaseEntity<int>
+    public class Person:BaseEntity<Guid>
     {
         internal Person() { }
 
@@ -14,7 +14,7 @@ namespace SchoolManagementApp.Domain.SharedKernel
             return int.Parse(age.ToString());
         }
 
-        public virtual void UpdateAddress(string city, string street, string house_Number)
+        public virtual void UpdateAddress(string city, string street, int house_Number)
         {
             Address = new Address(city, street, house_Number);
         }

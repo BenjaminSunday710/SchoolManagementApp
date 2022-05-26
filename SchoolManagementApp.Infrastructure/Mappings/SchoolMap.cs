@@ -1,10 +1,11 @@
 ﻿using FluentNHibernate.Mapping;
 using SchoolManagementApp.Domain.Schools;
 using Shared.Infrastructure.Mappings;
+using System;
 
 namespace SchoolManagementApp.Infrastructure.Mappings
 {
-    public class SchoolMap:BaseMap<int,School>
+    public class SchoolMap:BaseMap<Guid, School>
     {
         public SchoolMap()
         {

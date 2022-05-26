@@ -1,4 +1,5 @@
 ﻿using Shared.Application.ArchitectureBuilder.Queries;
+using System;
 using Utilities.Result.Util;
 using Utilities.Validations;
 
@@ -6,7 +7,7 @@ namespace SchoolManagementApp.Application.Queries.Schools.FetchSchool
 {
     public class FetchSchoolQuery : Query
     {
-        public FetchSchoolQuery(int id)
+        public FetchSchoolQuery(Guid id)
         {
             Id = id;
         }
@@ -14,10 +15,10 @@ namespace SchoolManagementApp.Application.Queries.Schools.FetchSchool
         protected override ActionResult Validate()
         {
             return new FluentValidator()
-                .IsValidInt(Id, $"invalid school Id")
+                .IsValidGuid(Id, $"invalid school Id")
                 .Result;
         }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

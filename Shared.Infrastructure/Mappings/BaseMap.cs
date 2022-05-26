@@ -8,7 +8,7 @@ namespace Shared.Infrastructure.Mappings
     {
         public BaseMap()
         {
-            Id(x => x.Id).GeneratedBy.Assigned();
+            Id(x => x.Id).GeneratedBy.Guid();
             Map(x => x.Created);
             Map(x => x.CreatedBy);
             Map(x => x.LastModified);

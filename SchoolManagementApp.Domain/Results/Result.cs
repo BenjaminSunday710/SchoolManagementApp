@@ -28,8 +28,7 @@ namespace SchoolManagementApp.Domain.Results
         public virtual Student Student { get; set; }
         public virtual Subject Subject { get; set; }
         public virtual SchoolClass SchoolClass { get; set; }
-        public virtual string Session { get; set; }
-        public virtual Term Term { get; set; }
+        public virtual ResultVariantManager ResultVariantManager { get; set; }
         public virtual double ContinuousAssessment { get; set; }
         public virtual double Examination { get; set; }
         public virtual double Total { get; set; }

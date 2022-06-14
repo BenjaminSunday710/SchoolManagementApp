@@ -2,17 +2,6 @@
 {
     public class ResultBuilder
     {
-        public ResultBuilder SetSession(string session)
-        {
-            _session = session;
-            return this;
-        }
-
-        public ResultBuilder SetTerm(Term term)
-        {
-            _term = term;
-            return this;
-        }
         public ResultBuilder SetContinuousAssessmentScore(double score)
         {
             _continuousAssessment = score;
@@ -43,14 +32,10 @@
                 Grade = _grade,
                 ContinuousAssessment = _continuousAssessment,
                 Examination = _examination,
-                Session = _session,
-                Term = _term,
                 Total = _continuousAssessment + _examination
             };
         }
 
-        private string _session { get; set; }
-        private Term _term { get; set; }
         private double _continuousAssessment { get; set; }
         private double _examination { get; set; }
         private Grade _grade { get; set; }

@@ -7,6 +7,7 @@ using SchoolManagementApp.Application.Queries.ResponseDto;
 using SchoolManagementApp.Domain.AcademicStaffs;
 using SchoolManagementApp.Infrastructure.Context;
 using SchoolManagementAppApi.ApplicationService;
+using SchoolManagementAppApi.ApplicationService.Authorizations;
 using Shared.Application.ArchitectureBuilder.Commands;
 using Shared.Application.Mediator;
 using System;
@@ -21,6 +22,7 @@ namespace SchoolManagementAppApi.Controllers.Core
         public AcademicStaffController(IMediator mediator) : base(mediator) { }
 
         [HttpPost]
+        [Permission(PermissionName.CAN_CREATE_ACADEMICSTAFF)]
         public async Task<IActionResult> CreateAcademicStaff(CreateAcademicStaffCommand command)
         {
             var createAction = await Mediator.ExecuteCommandAsync<CreateAcademicStaffCommand, CreateAcademicStaffCommandHandler,CoreDbContext,CommandResponse>(command);
@@ -28,6 +30,7 @@ namespace SchoolManagementAppApi.Controllers.Core
         }
 
         [HttpGet("id")]
+        [Permission(PermissionName.CAN_FETCH_ACADEMICSTAFF)]
         public async Task<IActionResult> FetchAcademicStaff(Guid id)
         {
             var query = new FetchAcademicStaffQuery() { Id = id };
@@ -36,6 +39,7 @@ namespace SchoolManagementAppApi.Controllers.Core
         }
 
         [HttpPut("assign-subjects")]
+        [Permission(PermissionName.CAN_ASSIGN_SUBJECT)]
         public async Task<IActionResult> AssignSubjects(AssignAcademicStaffSubjectsCommand command)
         {
             var assignAction = await Mediator.ExecuteCommandAsync<AssignAcademicStaffSubjectsCommand, AssignAcademicStaffSubjectsCommandHandler, CoreDbContext, CommandResponse>(command);
@@ -43,6 +47,7 @@ namespace SchoolManagementAppApi.Controllers.Core
         }
 
         [HttpGet("{id}/subjects")]
+        [Permission(PermissionName.CAN_FETCH_STAFF_SUBJECTS)]
         public async Task<IActionResult> FetchAcademicStaffSubjects(Guid id)
         {
             var query = new FetchAcademicStaffSubjectsQuery() { StaffId = id };

@@ -13,9 +13,16 @@ namespace Shared.Infrastructure
 
         public ISession OpenSession()
         {
-            return sessionFactory.OpenSession();
+            session= sessionFactory.OpenSession();
+            return session;
+        }
+
+        public void CloseSession()
+        {
+            session.Close();
         }
 
         private ISessionFactory sessionFactory;
+        private ISession session;
     }
 }

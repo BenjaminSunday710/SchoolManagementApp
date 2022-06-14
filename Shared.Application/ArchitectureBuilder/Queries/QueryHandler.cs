@@ -7,16 +7,16 @@ using Utilities.Result.Util;
 namespace Shared.Application.ArchitectureBuilder.Queries
 {
     public abstract class QueryHandler<TEntity, TId, TResponse> 
-        where TEntity:BaseEntity<TId>
+        where TEntity:IEntity<TId>
     {
         public abstract Task<ActionResult<TResponse>> HandleAsync(CancellationToken cancellationToken = default);
         public Operation<TResponse> OperationResult = new Operation<TResponse>();
         public IReadOnlyRepository<TEntity,TId> QueryContext { get; internal set; }
     }
 
-    public abstract class QueryHandler<TEntity, TId, TResponse, TQuery> 
+    public abstract class QueryHandler<TEntity, TId,TResponse, TQuery> 
         where TQuery:Query
-        where TEntity : BaseEntity<TId>
+        where TEntity : IEntity<TId>
     {
         public abstract Task<ActionResult<TResponse>> HandleAsync(TQuery query, CancellationToken cancellationToken = default);
         public Operation<TResponse> OperationResult = new Operation<TResponse>();

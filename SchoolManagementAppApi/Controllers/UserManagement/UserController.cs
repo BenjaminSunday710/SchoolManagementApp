@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SchoolManagementAppApi.ApplicationService;
+using SchoolManagementAppApi.ApplicationService.Authorizations;
 using Shared.Application.ArchitectureBuilder.Commands;
 using Shared.Application.Mediator;
 using System;
@@ -21,6 +22,7 @@ namespace SchoolManagementAppApi.Controllers.UserManagement
         public UserController(IMediator mediator) : base(mediator) { }
 
         [HttpPost("register")]
+        [Permission(PermissionName.CAN_REGISTER_USER)]
         public async Task<IActionResult> RegisterUser(RegisterUserCommand command)
         {
             var registerAction = await Mediator.ExecuteCommandAsync<RegisterUserCommand, RegisterUserCommandHandler, UserManagementDbContext, CommandResponse>(command);
@@ -28,6 +30,7 @@ namespace SchoolManagementAppApi.Controllers.UserManagement
         }
 
         [HttpGet()]
+        [Permission(PermissionName.CAN_FETCH_USERS)]
         public async Task<IActionResult> FetchUsers()
         {
             var response = await Mediator.SendQueryAsync<User, FetchUsersQueryHandler, List<UserResponse>>();
@@ -35,6 +38,7 @@ namespace SchoolManagementAppApi.Controllers.UserManagement
         }
 
         [HttpPut("assign-role")]
+        [Permission(PermissionName.CAN_ASSIGN_ROLE)]
         public async Task<IActionResult> AssignRole(AssignRoleCommand command)
         {
             var assignAction = await Mediator.ExecuteCommandAsync<AssignRoleCommand, AssignRoleCommandHandler, UserManagementDbContext, CommandResponse>(command);
@@ -42,7 +46,8 @@ namespace SchoolManagementAppApi.Controllers.UserManagement
         }
 
         [HttpGet("{id}/roles")]
-        public async Task<IActionResult> FetchRolePermissions(Guid id)
+        [Permission(PermissionName.CAN_FETCH_USER_ROLES)]
+        public async Task<IActionResult> FetchUserRole(Guid id)
         {
             var query = new FetchUserRolesQuery() { UserId = id };
             var response = await Mediator.SendQueryAsync<User, FetchUserRolesQuery, FetchUserRolesQueryHandler, List<RoleResponse>>(query);

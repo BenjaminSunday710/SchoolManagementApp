@@ -5,7 +5,6 @@ using System;
 using System.Threading.Tasks;
 using UserManagement.Domain.Permissions;
 using UserManagement.Domain.Roles;
-using UserManagement.Domain.Users;
 using UserManagement.Infrastructure.Repositories;
 using Utilities.Result.Util;
 

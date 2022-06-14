@@ -14,6 +14,11 @@ namespace UserManagement.Domain.Permissions
             Name = name;
         }
 
+        public override string ToString()
+        {
+            return $"Name: {Name}";
+        }
+
         public virtual string Name { get; protected set; }
 
         private ISet<Role> _roles = new HashSet<Role>();

@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using UserManagement.Domain.Roles;
 using UserManagement.Domain.Users;
 
 namespace UserManagement.Infrastructure.Security
@@ -13,16 +16,24 @@ namespace UserManagement.Infrastructure.Security
             Email = httpContext?.HttpContext?.User?.Claims
                 .FirstOrDefault(claim => claim.Type == ClaimTypes.Email)?.Value;
 
-            int.TryParse(httpContext?.HttpContext?.User?.Claims
+            FirstName = httpContext?.HttpContext?.User?.Claims
+                .FirstOrDefault(claim => claim.Type == ClaimTypes.GivenName)?.Value;
+            
+            LastName = httpContext?.HttpContext?.User?.Claims
+                .FirstOrDefault(claim => claim.Type == "FamilyName")?.Value;
+
+            Guid.TryParse(httpContext?.HttpContext?.User?.Claims
                 .FirstOrDefault(claim => claim.Type == ClaimTypes.Sid)?.Value, out var id);
-
-            Roles = httpContext?.HttpContext?.User?.Claims.Where(claim => claim.Type == ClaimTypes.Role)?.Select(x => x.Value).ToList();
-
             UserId = id;
+
+            var roleString = httpContext?.HttpContext?.User.Claims.FirstOrDefault(Claim => Claim.Type == "Roles")?.Value;
+            Roles = JsonConvert.DeserializeObject<List<RoleString>>(roleString);
         }
 
         public string Email { get; set; }
-        public int UserId { get; set; }
-        public IEnumerable<string> Roles { get; set; }
+        public Guid UserId { get; set; }
+        public string FirstName { get ; set; }
+        public string LastName { get ; set ; }
+        public IEnumerable<RoleString> Roles { get ; set ; }
     }
 }

@@ -10,7 +10,7 @@ namespace UserManagement.Infrastructure.Mappings
         {
             Table("Roles");
             Map(x => x.Title);
-            HasManyToMany(x => x.Users).Cascade.All().Inverse().Table("UserRoles");
+            HasManyToMany(x => x.Users).Inverse().Cascade.All().Table("UserRoles");
             HasManyToMany(x => x.Permissions).Cascade.All().Table("RolePermissions");
         }
     }

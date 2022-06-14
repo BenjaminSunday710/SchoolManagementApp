@@ -7,16 +7,16 @@ using UserManagement.Domain.Roles;
 using UserManagement.Infrastructure.Context;
 using Utilities.Result.Util;
 
-namespace UserManagement.Application.Commands.Roles.AssignPermissions
+namespace UserManagement.Application.Commands.Roles.AttachPermissions
 {
-    public class AssignPermissionsCommandHandler : CommandHandler<AssignPermissionsCommand, UserManagementDbContext, CommandResponse>
+    public class AttachPermissionsCommandHandler : CommandHandler<AttachPermissionsCommand, UserManagementDbContext, CommandResponse>
     {
-        public override async Task<ActionResult<CommandResponse>> HandleAsync(AssignPermissionsCommand command, CancellationToken cancellationToken = default)
+        public override async Task<ActionResult<CommandResponse>> HandleAsync(AttachPermissionsCommand command, CancellationToken cancellationToken = default)
         {
             var role = await Context.RoleRepository.GetByIdAsync(command.RoleId);
             if (role == null) return OperationResult.Failed($"role with id-{command.RoleId} does not exist");
             response = new CommandResponse(role.Id);
-            await AssignPermissions(role, command.PermissionIds);
+            await AttachPermissions(role, command.PermissionIds);
             await Context.RoleRepository.UpdateAsync(role, role.Id);
 
             var commitStatus = await Context.CommitAsync();
@@ -25,13 +25,13 @@ namespace UserManagement.Application.Commands.Roles.AssignPermissions
             return OperationResult.Successful(response);
         }
 
-        private async Task AssignPermissions(Role role, IEnumerable<Guid> permissionIds)
+        private async Task AttachPermissions(Role role, IEnumerable<Guid> permissionIds)
         {
             foreach (var permissionId in permissionIds)
             {
                 var permission = await Context.PermissionRepository.GetByIdAsync(permissionId);
                 if (permission == null) response.NotifyInvalidItems($"{permissionId} is invalid permission Id");
-                else role.AssignPermission(permission);
+                else role.AllowPermission(permission);
             }
         }
 

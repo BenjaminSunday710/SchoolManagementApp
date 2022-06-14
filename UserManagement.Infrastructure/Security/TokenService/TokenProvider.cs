@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using System;
 using UserManagement.Domain.Users;
 
 namespace UserManagement.Infrastructure.Security.TokenService
@@ -16,6 +17,11 @@ namespace UserManagement.Infrastructure.Security.TokenService
         {
             var token = JwtTokenGenerator.GenerateToken(user,_jwtSettings);
             return token;
+        }
+
+        public User ValidateToken(string token)
+        {
+            throw new NotImplementedException();
         }
     }
 }

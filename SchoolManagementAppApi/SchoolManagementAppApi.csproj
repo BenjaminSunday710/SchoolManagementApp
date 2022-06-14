@@ -1,8 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ApplicationService\Authorizations\Permissions\**" />
+    <Content Remove="ApplicationService\Authorizations\Permissions\**" />
+    <EmbeddedResource Remove="ApplicationService\Authorizations\Permissions\**" />
+    <None Remove="ApplicationService\Authorizations\Permissions\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.17" />

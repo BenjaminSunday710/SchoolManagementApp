@@ -14,17 +14,17 @@ namespace UserManagement.Application.Queries.Roles.FetchRoles
         public override async Task<ActionResult<List<RoleResponse>>> HandleAsync(CancellationToken cancellationToken = default)
         {
             var roles = await QueryContext.GetAllAsync();
-            var responses = new List<RoleResponse>();
+            var response = new List<RoleResponse>();
 
             foreach (var role in roles)
             {
-                responses.Add(new RoleResponse()
+                response.Add(new RoleResponse()
                 {
                     Title = role.Title,
                     Id = role.Id
                 });
             }
-            return OperationResult.Successful(responses);
+            return OperationResult.Successful(response);
         }
     }
 }

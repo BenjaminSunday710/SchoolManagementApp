@@ -1,11 +1,10 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using UserManagement.Domain.Users;
 
 namespace UserManagement.Infrastructure.Security.TokenService
@@ -14,12 +13,15 @@ namespace UserManagement.Infrastructure.Security.TokenService
     {
         public static string GenerateToken(User user, JwtSettings jwtSettings)
         {
+            var userRoles = user.Roles.Select(role=>role.GetRoleString());
+            var roleString = JsonConvert.SerializeObject(userRoles);
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Jti, new int().ToString()),
+                new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("uid", user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Roles.ToString())
+                new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
+                new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
+                new Claim("Roles",roleString)
             };
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));

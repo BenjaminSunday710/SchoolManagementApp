@@ -18,12 +18,12 @@ namespace Shared.Application.Mediator
 
         Task<ActionResult<TResponse>> SendQueryAsync<TEntity,TQuery, TQueryHandler, TResponse>(TQuery query)
              where TQuery : Query
-            where TEntity:BaseEntity<Guid>
+            where TEntity:IEntity<Guid>
              where TQueryHandler : QueryHandler<TEntity, Guid, TResponse, TQuery>
              where TResponse : class;
 
         Task<ActionResult<TResponse>> SendQueryAsync<TEntity,TQueryHandler, TResponse>()
-            where TEntity:BaseEntity<Guid>
+            where TEntity: IEntity<Guid>
             where TQueryHandler : QueryHandler<TEntity, Guid, TResponse>
             where TResponse : class;
 

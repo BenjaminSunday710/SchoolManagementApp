@@ -20,7 +20,8 @@ namespace UserManagement.Application.Queries.Permissions.FetchPermissions
             {
                 permissionResponses.Add(new PermissionResponse()
                 {
-                    Name = permission.Name
+                    Name = permission.Name,
+                    Id = permission.Id
                 });
             }
             return OperationResult.Successful(permissionResponses);   

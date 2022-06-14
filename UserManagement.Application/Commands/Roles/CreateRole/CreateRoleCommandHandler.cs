@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using UserManagement.Domain.Roles;
+using UserManagement.Domain.Users;
 using UserManagement.Infrastructure.Context;
 using Utilities.Result.Util;
 
@@ -15,6 +16,8 @@ namespace UserManagement.Application.Commands.Roles.CreateRole
             if (exists) return OperationResult.Failed($"permission with title-{command.Title} already exist");
 
             var role = new Role(command.Title);
+            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            role.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
             await Context.RoleRepository.AddAsync(role);
 
             var commitStatus = await Context.CommitAsync();

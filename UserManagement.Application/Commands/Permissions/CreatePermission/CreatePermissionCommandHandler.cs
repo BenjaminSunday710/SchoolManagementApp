@@ -1,4 +1,6 @@
 ﻿using Shared.Application.ArchitectureBuilder.Commands;
+using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UserManagement.Domain.Permissions;
@@ -12,7 +14,7 @@ namespace UserManagement.Application.Commands.Permissions.CreatePermission
         public override async Task<ActionResult<CommandResponse>> HandleAsync(CreatePermissionCommand command, CancellationToken cancellationToken = default)
         {
             var exists = await Context.PermissionRepository.ExistsAsync(x => x.Name == command.Name);
-            if (exists) return OperationResult.Failed($"permission with name-{command.Name} already exist");
+            if (exists) return OperationResult.Failed($"permission with name-{command.Name} already exists");
 
             var permission = new Permission(command.Name);
             await Context.PermissionRepository.AddAsync(permission);

@@ -11,12 +11,8 @@ namespace UserManagement.Infrastructure.Migrations
                 .WithColumn("Id").AsGuid().NotNullable().Unique()
                 .WithColumn("FirstName").AsString().NotNullable()
                 .WithColumn("LastName").AsString().NotNullable()
-                .WithColumn("Password").AsString().NotNullable()
-                .WithColumn("Email").AsString().NotNullable()
-                .WithColumn("Created").AsDateTime().NotNullable()
-                .WithColumn("CreatedBy").AsString().NotNullable()
-                .WithColumn("LastModified").AsString().Nullable()
-                .WithColumn("LastModifiedBy").AsDateTime().Nullable();
+                .WithColumn("PasswordHash").AsString().NotNullable()
+                .WithColumn("Email").AsString().NotNullable();
 
             Create.Table("Roles")
                 .WithColumn("Id").AsGuid().NotNullable().Unique()
@@ -27,12 +23,12 @@ namespace UserManagement.Infrastructure.Migrations
                 .WithColumn("LastModifiedBy").AsDateTime().Nullable();
 
             Create.Table("UserRoles")
-                .WithColumn("UserId").AsGuid().NotNullable()
+                .WithColumn("User_id").AsGuid().NotNullable()
                     .ForeignKey("Fk_UserRoles_User_Id", "Users", "Id")
-                .WithColumn("RoleId").AsGuid().NotNullable()
+                .WithColumn("Role_id").AsGuid().NotNullable()
                     .ForeignKey("Fk_UserRoles_Role_Id", "Roles", "Id");
 
-            var userRoleCompositeKey = new string[] { "UserId", "RoleId" };
+            var userRoleCompositeKey = new string[] { "User_id", "Role_id" };
             Create.PrimaryKey("Pk_User_Role_Id").OnTable("UserRoles").Columns(userRoleCompositeKey);
 
             Create.Table("Permissions")
@@ -44,12 +40,12 @@ namespace UserManagement.Infrastructure.Migrations
                 .WithColumn("LastModifiedBy").AsDateTime().Nullable();
 
             Create.Table("RolePermissions")
-               .WithColumn("RoleId").AsGuid().NotNullable()
+               .WithColumn("Role_id").AsGuid().NotNullable()
                     .ForeignKey("Fk_RolePermissions_Role_Id", "Roles", "Id")
-               .WithColumn("PermissionId").AsGuid().NotNullable()
+               .WithColumn("Permission_id").AsGuid().NotNullable()
                     .ForeignKey("Fk_RolePermissions_Permission_Id", "Permissions", "Id");
 
-            var rolePermissionCompositeKey = new string[] { "RoleId", "PermissionId" };
+            var rolePermissionCompositeKey = new string[] { "Role_id", "Permission_id" };
             Create.PrimaryKey("Pk_Role_Permission_Id").OnTable("RolePermissions").Columns(rolePermissionCompositeKey);
         }
     }

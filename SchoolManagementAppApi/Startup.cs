@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using SchoolManagementApp.Infrastructure.Mappings;
+using SchoolManagementAppApi.ApplicationService.Authorizations;
+using SchoolManagementAppApi.ApplicationService.MiddleWares;
 using Shared.Application.Mediator;
 using Shared.Application.Mediators;
 using Shared.Infrastructure;
@@ -47,15 +51,46 @@ namespace SchoolManagementAppApi
 
             services.AddUserManagementModule();
 
-            //services.AddCoreModule();
-
             services.AddMigrationService(connectionString);
 
             services.AddScoped<IMediator, Mediator>();
 
+            services.AddSwaggerGen(swagger =>
+            {
+                swagger.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "School Management App API",
+                    Version = "V1"
+                });
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer Scheme. \r\n\r\n 'Bearer' [space] and then your token in the text input below." +
+                    "\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                });
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference=new OpenApiReference
+                            {
+                                Type=ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new string[]{ }
+                    }
+                });
+            });
+
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
-            var jwtSettings = new JwtSettings();
+            jwtSettings = new JwtSettings();
             Configuration.GetSection("JwtSettings").Bind(jwtSettings);
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -63,8 +98,8 @@ namespace SchoolManagementAppApi
                 {
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = jwtSettings.Issuer,
@@ -73,21 +108,15 @@ namespace SchoolManagementAppApi
                     };
                 });
 
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
-                {
-                    Title = "School Management App API",
-                    Version = "V1"
-                });
-            });
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            services.AddAuthorization();
 
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -111,6 +140,12 @@ namespace SchoolManagementAppApi
             });
 
             app.RunMigration();
+
+            await app.SeedPermissions(Configuration);
+
+            await app.SeedAdmin(Configuration);
         }
+
+        private JwtSettings jwtSettings;
     }
 }

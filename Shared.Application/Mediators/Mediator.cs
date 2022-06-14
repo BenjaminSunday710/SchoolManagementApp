@@ -40,10 +40,14 @@ namespace Shared.Application.Mediators
             {
                 return ActionResult<TResponse>.Failed().AddError("unable to handle the request");
             }
+            finally
+            {
+                //sessionProvider.CloseSession();
+            }
         }
 
         public async Task<ActionResult<TResponse>> SendQueryAsync<TEntity,TQueryHandler, TResponse>()
-            where TEntity:BaseEntity<Guid>
+            where TEntity:IEntity<Guid>
             where TQueryHandler : QueryHandler<TEntity, Guid, TResponse>
             where TResponse : class
         {
@@ -58,10 +62,14 @@ namespace Shared.Application.Mediators
             {
                 return ActionResult<TResponse>.Failed().AddError("unable to handle the request");
             }
+            finally
+            {
+                sessionProvider.CloseSession();
+            }
         }
 
         public async Task<ActionResult<TResponse>> SendQueryAsync<TEntity,TQuery, TQueryHandler, TResponse>(TQuery query)
-            where TEntity : BaseEntity<Guid>
+            where TEntity : IEntity<Guid>
             where TQuery :Query
             where TQueryHandler : QueryHandler<TEntity, Guid, TResponse, TQuery>
             where TResponse : class
@@ -77,6 +85,10 @@ namespace Shared.Application.Mediators
             catch (Exception ex)
             {
                 return ActionResult<TResponse>.Failed().AddError("unable to handle the request");
+            }
+            finally
+            {
+                sessionProvider.CloseSession();
             }
         }
 

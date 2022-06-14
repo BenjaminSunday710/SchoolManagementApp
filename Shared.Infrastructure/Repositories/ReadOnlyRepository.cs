@@ -10,7 +10,7 @@ using Shared.Domain.Entities;
 namespace Shared.Infrastructure.Repositories
 {
     public class ReadOnlyRepository<TEntity,TId>:IReadOnlyRepository<TEntity,TId>
-        where TEntity:BaseEntity<TId>
+        where TEntity:IEntity<TId>
     {
         private ISession _session;
 

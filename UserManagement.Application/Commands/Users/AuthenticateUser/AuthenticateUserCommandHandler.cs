@@ -20,14 +20,14 @@ namespace UserManagement.Application.Commands.Users.AuthenticateUser
 
             var tokenProvider = (ITokenProvider)ServiceProvider.GetService(typeof(ITokenProvider));
             var token = tokenProvider.ProvideToken(user);
-
-            var response = new AuthenticatedUserResponse() { Token = token, UserId = user.Id, Roles=user.Roles };
+            
+            var response = new AuthenticatedUserResponse() { Token = token, User = user };
             return OperationResult.Successful(response);
         }
 
         private bool IsValidPassword(User user,string providedPassword)
         {
-            var result= new PasswordHasher<User>().VerifyHashedPassword(user, user.Password, providedPassword);
+            var result= new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, providedPassword);
 
             return (result == PasswordVerificationResult.Success) ? true : false;
         }

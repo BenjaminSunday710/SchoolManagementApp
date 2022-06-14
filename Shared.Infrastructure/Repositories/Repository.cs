@@ -2,15 +2,13 @@
 using NHibernate.Linq;
 using Shared.Domain.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Shared.Infrastructure.Repositories
 {
     public class Repository<TEntity, TId> : ReadOnlyRepository<TEntity,TId>, IRepository<TEntity, TId>
-        where TEntity : BaseEntity<TId>
+        where TEntity : IEntity<TId>
     {
         private ISession _session;
 

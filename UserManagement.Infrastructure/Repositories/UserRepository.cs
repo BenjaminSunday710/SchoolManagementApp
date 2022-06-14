@@ -7,7 +7,7 @@ using UserManagement.Domain.Users;
 
 namespace UserManagement.Infrastructure.Repositories
 {
-    public class UserRepository:Repository<User, Guid>
+    public class UserRepository:Repository<User, Guid>,IUserRepository
     {
         public UserRepository(ISession session) : base(session)
         {

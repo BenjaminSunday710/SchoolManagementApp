@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Utilities.Result.Util;
 using Utilities.Validations;
 
-namespace UserManagement.Application.Commands.Roles.AssignPermissions
+namespace UserManagement.Application.Commands.Roles.AttachPermissions
 {
-    public class AssignPermissionsCommand : Command
+    public class AttachPermissionsCommand : Command
     {
         protected override ActionResult Validate()
         {

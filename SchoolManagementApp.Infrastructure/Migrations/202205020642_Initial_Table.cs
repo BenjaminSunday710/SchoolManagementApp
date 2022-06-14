@@ -110,8 +110,17 @@ namespace SchoolManagementApp.Infrastructure.Migrations
             var studentSubjectCompositeKey = new string[] { "Student_id", "Subject_id" };
             Create.PrimaryKey("Pk_Student_Subjects_id").OnTable("StudentSubjects").Columns(studentSubjectCompositeKey);
 
+            Create.Table("ResultVariantManagers")
+               .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
+               .WithColumn("Session").AsString().NotNullable()
+               .WithColumn("Term").AsString().NotNullable()
+               .WithColumn("Created").AsDateTime().NotNullable()
+               .WithColumn("CreatedBy").AsString().NotNullable()
+               .WithColumn("LastModified").AsString().Nullable()
+               .WithColumn("LastModifiedBy").AsDateTime().Nullable();
+
             Create.Table("Results")
-                 .WithColumn("Id").AsGuid().NotNullable().NotNullable()
+                 .WithColumn("Id").AsGuid().NotNullable()
                  .WithColumn("Created").AsDateTime().NotNullable()
                  .WithColumn("CreatedBy").AsString().NotNullable()
                  .WithColumn("LastModified").AsString().Nullable()
@@ -125,9 +134,10 @@ namespace SchoolManagementApp.Infrastructure.Migrations
                  .WithColumn("Remark").AsString().NotNullable()
                  .WithColumn("SchoolClass_id").AsGuid().NotNullable().ForeignKey("Fk_Results_SchoolClass_id", "SchoolClasses", "Id")
                  .WithColumn("Subject_id").AsGuid().NotNullable().ForeignKey("Fk_Results_Subject_id", "Subjects", "Id")
-                 .WithColumn("Student_id").AsGuid().NotNullable().ForeignKey("Fk_Results_Student_id", "Students", "Id");
+                 .WithColumn("Student_id").AsGuid().NotNullable().ForeignKey("Fk_Results_Student_id", "Students", "Id")
+                 .WithColumn("ResultVariantManager_id").AsGuid().NotNullable().ForeignKey("Fk_Results_ResultVariantManager_Id", "ResultVariantManagers", "Id");
 
-            var resultCompositeKey = new string[] { "Student_id", "Subject_id" };
+            var resultCompositeKey = new string[] { "Student_id", "Subject_id", "ResultVariantManager_id" };
             Create.PrimaryKey("Pk_Result_Student_Subject_Id").OnTable("Results").Columns(resultCompositeKey);
         }
     }

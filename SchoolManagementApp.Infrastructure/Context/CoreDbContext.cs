@@ -6,6 +6,7 @@ using SchoolManagementApp.Domain.SchoolClasses;
 using SchoolManagementApp.Domain.Schools;
 using SchoolManagementApp.Domain.Students;
 using SchoolManagementApp.Domain.Subjects;
+using SchoolManagementApp.Infrastructure.Repositories;
 using Shared.Infrastructure.Context;
 using Shared.Infrastructure.Repositories;
 using System;
@@ -29,6 +30,7 @@ namespace SchoolManagementApp.Infrastructure.Context
             AcademicStaffRepository = new Repository<AcademicStaff, Guid>(session);
             NonAcademicStaffRepository = new Repository<NonAcademicStaff, Guid>(session);
             ResultRepository = new Repository<Result, Guid>(session);
+            ResultVariantManagerRepository = new ResultVariantManagerRepository(session);
         }
 
         public async override Task<ActionResult> CommitAsync()
@@ -54,6 +56,6 @@ namespace SchoolManagementApp.Infrastructure.Context
         public IRepository<AcademicStaff, Guid> AcademicStaffRepository { get; private set; }
         public IRepository<NonAcademicStaff, Guid> NonAcademicStaffRepository { get; private set; }
         public IRepository<Result, Guid> ResultRepository { get; private set; }
-       
+        public ResultVariantManagerRepository ResultVariantManagerRepository { get; private set; }
     }
 }

@@ -1,9 +1,10 @@
-﻿using SchoolManagementApp.Domain.AcademicStaffs;
-using SchoolManagementApp.Infrastructure.Context;
+﻿using SchoolManagementApp.Infrastructure.Context;
 using Shared.Application.ArchitectureBuilder.Commands;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using UserManagement.Domain.Users;
 using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Commands.AcademicStaffs.AssignSubjects
@@ -22,6 +23,10 @@ namespace SchoolManagementApp.Application.Commands.AcademicStaffs.AssignSubjects
                 if (subject == null) errors.Add($"subject with Id-{subjectId} not found");
                 else teacher.AssignSubject(subject);
             }
+
+            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            teacher.LastModifiedBy = $"{currentUser.FirstName} {currentUser.LastName}";
+            teacher.LastModified = DateTime.UtcNow;
             await Context.AcademicStaffRepository.UpdateAsync(teacher, teacher.Id);
 
             var commitStatus = await Context.CommitAsync();

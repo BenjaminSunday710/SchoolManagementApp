@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -8,6 +8,7 @@
     <ProjectReference Include="..\SchoolManagementApp.Domain\SchoolManagementApp.Domain.csproj" />
     <ProjectReference Include="..\SchoolManagementApp.Infrastructure\SchoolManagementApp.Infrastructure.csproj" />
     <ProjectReference Include="..\Shared.Application\Shared.Application.csproj" />
+    <ProjectReference Include="..\UserManagement.Domain\UserManagement.Domain.csproj" />
   </ItemGroup>
 
 </Project>

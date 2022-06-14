@@ -4,6 +4,7 @@ using SchoolManagementApp.Infrastructure.Context;
 using Shared.Application.ArchitectureBuilder.Commands;
 using System.Threading;
 using System.Threading.Tasks;
+using UserManagement.Domain.Users;
 using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Commands.AcademicStaffs.CreateAcademicStaff
@@ -29,6 +30,8 @@ namespace SchoolManagementApp.Application.Commands.AcademicStaffs.CreateAcademic
             var person = personBuilder.Build();
 
             var academicStaff = new AcademicStaff(person, school, command.Designation);
+            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            academicStaff.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
             await Context.AcademicStaffRepository.AddAsync(academicStaff);
             var commitStatus = await Context.CommitAsync();

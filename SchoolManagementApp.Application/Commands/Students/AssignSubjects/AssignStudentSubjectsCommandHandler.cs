@@ -1,8 +1,10 @@
 ﻿using SchoolManagementApp.Infrastructure.Context;
 using Shared.Application.ArchitectureBuilder.Commands;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using UserManagement.Domain.Users;
 using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Commands.Students.AssignSubjects
@@ -21,6 +23,10 @@ namespace SchoolManagementApp.Application.Commands.Students.AssignSubjects
                 if (subject == null) errors.Add($"subject with Id-{subjectId} not found");
                 else student.OffersSubject(subject);
             }
+
+            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            student.LastModifiedBy = $"{currentUser.FirstName} {currentUser.LastName}";
+            student.LastModified = DateTime.UtcNow;
             await Context.StudentRepository.UpdateAsync(student, student.Id);
 
             var commitStatus = await Context.CommitAsync();

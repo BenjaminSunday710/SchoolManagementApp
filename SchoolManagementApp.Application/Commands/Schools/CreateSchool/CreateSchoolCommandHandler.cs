@@ -3,6 +3,7 @@ using SchoolManagementApp.Infrastructure.Context;
 using Shared.Application.ArchitectureBuilder.Commands;
 using System.Threading;
 using System.Threading.Tasks;
+using UserManagement.Domain.Users;
 using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Commands.Schools.CreateSchool
@@ -13,6 +14,9 @@ namespace SchoolManagementApp.Application.Commands.Schools.CreateSchool
         {
             var school = new School(command.Name);
             school.ProvideLocation(command.City, command.Street, command.House_Number);
+
+            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            school.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
             await Context.SchoolRepository.AddAsync(school);
             var commitStatus = await Context.CommitAsync();

@@ -3,6 +3,7 @@ using SchoolManagementApp.Infrastructure.Context;
 using Shared.Application.ArchitectureBuilder.Commands;
 using System.Threading;
 using System.Threading.Tasks;
+using UserManagement.Domain.Users;
 using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Commands.Results.CreateResult
@@ -25,19 +26,32 @@ namespace SchoolManagementApp.Application.Commands.Results.CreateResult
             resultBuilder.SetExamScore(command.Examination);
             resultBuilder.SetGrade(command.Grade);
             resultBuilder.SetRemark(command.Remark);
-            resultBuilder.SetSession(command.Session);
-            resultBuilder.SetTerm(command.Term);
             var result = resultBuilder.Build();
             result.AssignSchoolClass(schoolClass);
             result.AssignStudent(student);
             result.AssignSubject(subject);
+
+            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            result.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
+
+            var resultVariantManager = await Context.ResultVariantManagerRepository.GetResultVariantManager(command.Session, command.Term);
+            if (resultVariantManager == null) await CreateResultVariantManager(result, Context, command.Session, command.Term);
+            else resultVariantManager.AddResult(result);
 
             await Context.ResultRepository.AddAsync(result);
 
             var commitStatus = await Context.CommitAsync();
             if (commitStatus.NotSuccessful) return OperationResult.Failed("unable to save result");
             return OperationResult.Successful(new CommandResponse(result.Id));
-             
         }
+
+        private async Task CreateResultVariantManager(Result result, CoreDbContext context, string session, Term term)
+        {
+            var resultVariantManager = new ResultVariantManager(session, term);
+            resultVariantManager.AddResult(result);
+            resultVariantManager.CreatedBy = result.CreatedBy;
+            await Context.ResultVariantManagerRepository.AddAsync(resultVariantManager);
+        }
+
     }
 }

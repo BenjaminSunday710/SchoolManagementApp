@@ -3,6 +3,7 @@ using SchoolManagementApp.Infrastructure.Context;
 using Shared.Application.ArchitectureBuilder.Commands;
 using System.Threading;
 using System.Threading.Tasks;
+using UserManagement.Domain.Users;
 using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Commands.Subjects.CreateSubject
@@ -18,6 +19,9 @@ namespace SchoolManagementApp.Application.Commands.Subjects.CreateSubject
                 return OperationResult.Failed($"class with Id-{command.SchoolClassId} not found");
 
             var subject = new Subject(command.Name, schoolClass);
+
+            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            subject.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
             await Context.SubjectRepository.AddAsync(subject);
             var commitStatus = await Context.CommitAsync();

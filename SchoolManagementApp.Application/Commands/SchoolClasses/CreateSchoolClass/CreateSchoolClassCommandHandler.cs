@@ -3,6 +3,7 @@ using SchoolManagementApp.Infrastructure.Context;
 using Shared.Application.ArchitectureBuilder.Commands;
 using System.Threading;
 using System.Threading.Tasks;
+using UserManagement.Domain.Users;
 using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Commands.SchoolClasses.CreateSchoolClass
@@ -17,6 +18,9 @@ namespace SchoolManagementApp.Application.Commands.SchoolClasses.CreateSchoolCla
                 return OperationResult.Failed($"School with id-{command.SchoolId} not found");
 
             var schoolClass = new SchoolClass(command.Name, school);
+
+            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            schoolClass.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
             await Context.SchoolClassRepository.AddAsync(schoolClass);
             var commitStatus = await Context.CommitAsync();

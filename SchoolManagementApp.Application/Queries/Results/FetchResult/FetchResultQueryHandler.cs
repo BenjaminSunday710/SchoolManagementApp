@@ -16,13 +16,14 @@ namespace SchoolManagementApp.Application.Queries.Results.FetchResult
             if (result == null) return OperationResult.Successful(new ResultResponseDto());
             var resultDto = new ResultResponseDto()
             {
-                ClassId = result.SchoolClass.Id,
+                SchoolClass = result.SchoolClass.Name,
+                Subject=result.Subject.Name,
                 ContinuousAssessment = result.ContinuousAssessment,
                 Examination = result.Examination,
                 Grade = result.Grade,
                 Remark = result.Remark,
-                Session = result.Session,
-                Term = result.Term,
+                Session = result.ResultVariantManager.Session,
+                Term = result.ResultVariantManager.Term,
                 Total = result.Total
             };
             return OperationResult.Successful(resultDto);

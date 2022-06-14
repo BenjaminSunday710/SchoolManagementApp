@@ -4,6 +4,7 @@ using SchoolManagementApp.Infrastructure.Context;
 using Shared.Application.ArchitectureBuilder.Commands;
 using System.Threading;
 using System.Threading.Tasks;
+using UserManagement.Domain.Users;
 using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Commands.NonAcademicStaffs.CreateNonAcademicStaff
@@ -29,6 +30,8 @@ namespace SchoolManagementApp.Application.Commands.NonAcademicStaffs.CreateNonAc
             var person = personBuilder.Build();
 
             var nonAcademicStaff = new NonAcademicStaff(person, school, command.Unit, command.Designation);
+            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            nonAcademicStaff.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
             await Context.NonAcademicStaffRepository.AddAsync(nonAcademicStaff);
             var commitStatus = await Context.CommitAsync();

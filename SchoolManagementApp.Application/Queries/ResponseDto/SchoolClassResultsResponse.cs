@@ -1,10 +1,11 @@
 ﻿using SchoolManagementApp.Domain.Results;
 using System;
 
-namespace SchoolManagementApp.Application.Queries.ResponseDto
+namespace SchoolManagementApp.Application.Queries.Results.FetchClassResults
 {
-    public class ResultResponseDto
+    public class SchoolClassResultsResponse
     {
+        public string Student { get; set; }
         public string SchoolClass { get; set; }
         public string Subject { get; set; }
         public string Session { get; set; }
@@ -14,5 +15,6 @@ namespace SchoolManagementApp.Application.Queries.ResponseDto
         public double Total { get; set; }
         public Grade Grade { get; set; }
         public Remark Remark { get; set; }
+        public Guid Id { get; set; }
     }
 }

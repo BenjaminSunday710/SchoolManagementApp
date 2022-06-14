@@ -4,6 +4,7 @@ using SchoolManagementApp.Infrastructure.Context;
 using Shared.Application.ArchitectureBuilder.Commands;
 using System.Threading;
 using System.Threading.Tasks;
+using UserManagement.Domain.Users;
 using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Commands.Students.CreateStudent
@@ -34,6 +35,8 @@ namespace SchoolManagementApp.Application.Commands.Students.CreateStudent
             var person = personBuilder.Build();
 
             var student = new Student(person, school, schoolClass);
+            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            student.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
             await Context.StudentRepository.AddAsync(student);
             var commitStatus = await Context.CommitAsync();

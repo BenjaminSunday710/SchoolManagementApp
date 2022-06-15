@@ -34,6 +34,7 @@ namespace UserManagement.Domain.Users
 
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }
+        public virtual TokenManager TokenManager { get; set; }
 
         private ISet<Role> _roles = new HashSet<Role>();
         public virtual IEnumerable<Role> Roles => _roles;

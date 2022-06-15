@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Shared.Application.ArchitectureBuilder.Commands;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UserManagement.Domain.Users;
@@ -20,8 +21,21 @@ namespace UserManagement.Application.Commands.Users.AuthenticateUser
 
             var tokenProvider = (ITokenProvider)ServiceProvider.GetService(typeof(ITokenProvider));
             var token = tokenProvider.ProvideToken(user);
-            
-            var response = new AuthenticatedUserResponse() { Token = token, User = user };
+            var refreshToken = tokenProvider.ProvideRefreshToken();
+
+            user.TokenManager.RefreshToken = refreshToken;
+            user.TokenManager.RefreshTokenExpiryToken = DateTime.UtcNow.AddHours(24);
+
+            await Context.UserRepository.UpdateAsync(user, user.Id);
+            var commitStatus = await Context.CommitAsync();
+            if (commitStatus.NotSuccessful) return OperationResult.Failed("user authentication failed");
+
+            var response = new AuthenticatedUserResponse()
+            {
+                Token = token,
+                User = user,
+                RefreshToken = refreshToken,
+            };
             return OperationResult.Successful(response);
         }
 

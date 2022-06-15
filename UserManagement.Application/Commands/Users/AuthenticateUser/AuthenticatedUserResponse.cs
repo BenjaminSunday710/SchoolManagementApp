@@ -1,4 +1,5 @@
-﻿using UserManagement.Domain.Users;
+﻿using System;
+using UserManagement.Domain.Users;
 
 namespace UserManagement.Application.Commands.Users.AuthenticateUser
 {
@@ -6,5 +7,6 @@ namespace UserManagement.Application.Commands.Users.AuthenticateUser
     {
         public User User { get; set; }
         public string Token { get; set; }
+        public string RefreshToken { get; set; }
     }
 }

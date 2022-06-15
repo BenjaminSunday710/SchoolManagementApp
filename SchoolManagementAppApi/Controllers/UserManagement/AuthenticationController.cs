@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Shared.Application.Mediator;
 using System.Threading.Tasks;
 using UserManagement.Application.Commands.Users.AuthenticateUser;
+using UserManagement.Application.Commands.Users.RefreshToken;
+using UserManagement.Application.Commands.Users.RevokeToken;
 using UserManagement.Infrastructure.Context;
 
 namespace SchoolManagementAppApi.Controllers.UserManagement
@@ -24,22 +26,38 @@ namespace SchoolManagementAppApi.Controllers.UserManagement
 
             var user = authenticatedUser.Data.User;
 
-            //var userRoles = JsonConvert.SerializeObject(user.Roles);
-            //var claims = new List<Claim>()
-            //{
-            //    new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-            //    new Claim(ClaimTypes.Email,user.Email),
-            //    new Claim(ClaimTypes.Name,user.Email),
-            //    new Claim(ClaimTypes.GivenName,user.FirstName),
-            //    new Claim(ClaimTypes.Surname,user.LastName),
-            //    new Claim("token",authenticatedUser.Data.Token)
-            //};
+            return Ok(new { 
+                UserId = user.Id, 
+                Token = authenticatedUser.Data.Token, 
+                RefreshToken = authenticatedUser.Data.RefreshToken 
+            });
+        } 
+        
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken(RefreshTokenCommand command)
+        {
+            var refreshedToken = await Mediator.ExecuteCommandAsync<RefreshTokenCommand, RefreshTokenCommandHandler, UserManagementDbContext, AuthenticatedUserResponse>(command);
 
-            //var identity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme);
-            //var principal = new ClaimsPrincipal(identity);
+            if (refreshedToken.NotSuccessful) return Unauthorized(refreshedToken.Errors);
 
-            //await HttpContext.SignInAsync(JwtBearerDefaults.AuthenticationScheme, principal);
-            return Ok(new { UserId = user.Id, Token = authenticatedUser.Data.Token });
+            var user = refreshedToken.Data.User;
+
+            return Ok(new { 
+                UserId = user.Id, 
+                Token = refreshedToken.Data.Token, 
+                RefreshToken = refreshedToken.Data.RefreshToken 
+            });
+        } 
+        
+        [HttpPost("revoke-token")]
+        [Authorize]
+        public async Task<IActionResult> RevokeToken(RevokeTokenCommand command)
+        {
+            var refreshedToken = await Mediator.ExecuteCommandAsync<RevokeTokenCommand, RevokeTokenCommandHandler, UserManagementDbContext, AuthenticatedUserResponse>(command);
+
+            if (refreshedToken.NotSuccessful) return Unauthorized(refreshedToken.Errors);
+
+            return NoContent();
         }
 
         [HttpPost("log-out")]

@@ -44,10 +44,11 @@ namespace SchoolManagementAppApi.ApplicationService.MiddleWares
                         var createRoleCommand = new CreateRoleCommand() { Title = "Admin" };
                         var createRoleResponse = await mediator.ExecuteCommandAsync<CreateRoleCommand, CreateRoleCommandHandler, UserManagementDbContext, CommandResponse>(createRoleCommand);
 
-                        var canAssignPermission = session.Query<Permission>().First(permission => permission.Name == PermissionName.CAN_ATTACH_PERMISSIONS);
-                        var canFetchRoles = session.Query<Permission>().First(permission => permission.Name == PermissionName.CAN_FETCH_ROLES);
-                        var canFetchUsers = session.Query<Permission>().First(permission => permission.Name == PermissionName.CAN_FETCH_USERS);
-                        var canAssignRole = session.Query<Permission>().First(permission => permission.Name == PermissionName.CAN_ASSIGN_ROLE);
+                        var permissions = session.Query<Permission>().ToList();
+                        var canAssignPermission = permissions.First(permission => permission.Name == PermissionName.CAN_ATTACH_PERMISSIONS);
+                        var canFetchRoles = permissions.First(permission => permission.Name == PermissionName.CAN_FETCH_ROLES);
+                        var canFetchUsers = permissions.First(permission => permission.Name == PermissionName.CAN_FETCH_USERS);
+                        var canAssignRole = permissions.First(permission => permission.Name == PermissionName.CAN_ASSIGN_ROLE);
 
                         var attachPermissionCommand = new AttachPermissionsCommand()
                         {

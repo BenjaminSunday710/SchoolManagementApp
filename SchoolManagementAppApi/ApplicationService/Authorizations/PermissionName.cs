@@ -56,7 +56,6 @@
 
         public const string CAN_FETCH_NON_ACADEMICSTAFFS = "can fetch non-academic staffs";
         public const string CAN_FETCH_NON_ACADEMICSTAFF = "can fetch non-academic staff";
-        public const string CAN_FETCH_NON_ACADEMIC_STAFFS = "can fetch non-academic staffs";
         public const string CAN_CREATE_NON_ACADEMICSTAFF = "can create non-academic staff";
     }
 }

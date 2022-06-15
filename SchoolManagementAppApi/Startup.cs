@@ -144,6 +144,8 @@ namespace SchoolManagementAppApi
             await app.SeedPermissions(Configuration);
 
             await app.SeedAdmin(Configuration);
+
+            await app.SeedDefaultRoles();
         }
 
         private JwtSettings jwtSettings;

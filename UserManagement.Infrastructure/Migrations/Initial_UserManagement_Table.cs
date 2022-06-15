@@ -12,7 +12,9 @@ namespace UserManagement.Infrastructure.Migrations
                 .WithColumn("FirstName").AsString().NotNullable()
                 .WithColumn("LastName").AsString().NotNullable()
                 .WithColumn("PasswordHash").AsString().NotNullable()
-                .WithColumn("Email").AsString().NotNullable();
+                .WithColumn("Email").AsString().NotNullable()
+                .WithColumn("RefreshToken").AsString().NotNullable()
+                .WithColumn("RefreshTokenExpiryTime").AsDateTime().NotNullable();
 
             Create.Table("Roles")
                 .WithColumn("Id").AsGuid().NotNullable().Unique()

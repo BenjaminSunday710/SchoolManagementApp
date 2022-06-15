@@ -13,6 +13,11 @@ namespace UserManagement.Infrastructure.Mappings
             Map(x => x.LastName);
             Map(x => x.Email);
             Map(x => x.PasswordHash);
+            Component(x => x.TokenManager, member =>
+            {
+                member.Map(m => m.RefreshToken);
+                member.Map(m => m.RefreshTokenExpiryToken);
+            });
             HasManyToMany(x => x.Roles).Cascade.All().Table("UserRoles");
         }
     }

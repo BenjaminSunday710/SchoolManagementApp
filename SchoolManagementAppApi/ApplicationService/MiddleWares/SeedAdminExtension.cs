@@ -46,14 +46,21 @@ namespace SchoolManagementAppApi.ApplicationService.MiddleWares
 
                         var permissions = session.Query<Permission>().ToList();
                         var canAssignPermission = permissions.First(permission => permission.Name == PermissionName.CAN_ATTACH_PERMISSIONS);
+                        var canFetchPermissions = permissions.First(permission => permission.Name == PermissionName.CAN_FETCH_PERMISSIONS);
                         var canFetchRoles = permissions.First(permission => permission.Name == PermissionName.CAN_FETCH_ROLES);
                         var canFetchUsers = permissions.First(permission => permission.Name == PermissionName.CAN_FETCH_USERS);
                         var canAssignRole = permissions.First(permission => permission.Name == PermissionName.CAN_ASSIGN_ROLE);
 
                         var attachPermissionCommand = new AttachPermissionsCommand()
                         {
-                            PermissionIds = new List<Guid>() { canAssignPermission.Id,canAssignRole.Id,canFetchRoles.Id,
-                            canFetchUsers.Id},
+                            PermissionIds = new List<Guid>() 
+                            { 
+                                canAssignPermission.Id,
+                                canAssignRole.Id,
+                                canFetchRoles.Id,
+                                canFetchUsers.Id,
+                                canFetchPermissions.Id
+                            },
                             RoleId = createRoleResponse.Data.Id
                         };
 

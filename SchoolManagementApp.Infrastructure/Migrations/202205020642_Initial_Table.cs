@@ -125,8 +125,6 @@ namespace SchoolManagementApp.Infrastructure.Migrations
                  .WithColumn("CreatedBy").AsString().NotNullable()
                  .WithColumn("LastModified").AsString().Nullable()
                  .WithColumn("LastModifiedBy").AsDateTime().Nullable()
-                 .WithColumn("Session").AsString().NotNullable()
-                 .WithColumn("Term").AsString().NotNullable()
                  .WithColumn("ContinuousAssessment").AsString().NotNullable()
                  .WithColumn("Examination").AsString().NotNullable()
                  .WithColumn("Total").AsString().NotNullable()
@@ -137,7 +135,7 @@ namespace SchoolManagementApp.Infrastructure.Migrations
                  .WithColumn("Student_id").AsGuid().NotNullable().ForeignKey("Fk_Results_Student_id", "Students", "Id")
                  .WithColumn("ResultVariantManager_id").AsGuid().NotNullable().ForeignKey("Fk_Results_ResultVariantManager_Id", "ResultVariantManagers", "Id");
 
-            var resultCompositeKey = new string[] { "Student_id", "Subject_id", "ResultVariantManager_id" };
+            var resultCompositeKey = new string[] { "Student_id", "Subject_id", "SchoolClass_id","ResultVariantManager_id" };
             Create.PrimaryKey("Pk_Result_Student_Subject_Id").OnTable("Results").Columns(resultCompositeKey);
         }
     }

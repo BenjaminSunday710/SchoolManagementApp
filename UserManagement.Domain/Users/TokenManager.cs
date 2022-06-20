@@ -4,7 +4,14 @@ namespace UserManagement.Domain.Users
 {
     public class TokenManager
     {
-        public virtual string RefreshToken { get; set; }
-        public virtual DateTime RefreshTokenExpiryToken { get; set; }
+        protected TokenManager() { }
+        public TokenManager(string token, DateTime refreshTokenExpiryTime)
+        {
+            RefreshToken = token;
+            RefreshTokenExpiryTime = refreshTokenExpiryTime;
+        }
+
+        public virtual string RefreshToken { get; protected set; }
+        public virtual DateTime RefreshTokenExpiryTime { get; protected set; }
     }
 }

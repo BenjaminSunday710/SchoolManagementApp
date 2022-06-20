@@ -8,16 +8,16 @@ namespace UserManagement.Infrastructure.Migrations
         public override void Up()
         {
             Create.Table("Users")
-                .WithColumn("Id").AsGuid().NotNullable().Unique()
+                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
                 .WithColumn("FirstName").AsString().NotNullable()
                 .WithColumn("LastName").AsString().NotNullable()
                 .WithColumn("PasswordHash").AsString().NotNullable()
                 .WithColumn("Email").AsString().NotNullable()
-                .WithColumn("RefreshToken").AsString().NotNullable()
-                .WithColumn("RefreshTokenExpiryTime").AsDateTime().NotNullable();
+                .WithColumn("RefreshToken").AsString().Nullable()
+                .WithColumn("RefreshTokenExpiryTime").AsDateTime().Nullable();
 
             Create.Table("Roles")
-                .WithColumn("Id").AsGuid().NotNullable().Unique()
+                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
                 .WithColumn("Title").AsString().NotNullable()
                 .WithColumn("Created").AsDateTime().NotNullable()
                 .WithColumn("CreatedBy").AsString().NotNullable()
@@ -34,7 +34,7 @@ namespace UserManagement.Infrastructure.Migrations
             Create.PrimaryKey("Pk_User_Role_Id").OnTable("UserRoles").Columns(userRoleCompositeKey);
 
             Create.Table("Permissions")
-                .WithColumn("Id").AsGuid().NotNullable().Unique()
+                .WithColumn("Id").AsGuid().NotNullable().PrimaryKey()
                 .WithColumn("Name").AsString().NotNullable()
                 .WithColumn("Created").AsDateTime().NotNullable()
                 .WithColumn("CreatedBy").AsString().NotNullable()

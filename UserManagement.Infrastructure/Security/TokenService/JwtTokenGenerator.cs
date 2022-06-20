@@ -21,7 +21,7 @@ namespace UserManagement.Infrastructure.Security.TokenService
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
-                new Claim("Roles",roleString)
+                new Claim("Roles",roleString),
             };
 
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key));

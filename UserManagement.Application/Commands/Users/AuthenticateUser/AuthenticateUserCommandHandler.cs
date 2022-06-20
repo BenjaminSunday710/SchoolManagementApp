@@ -23,8 +23,7 @@ namespace UserManagement.Application.Commands.Users.AuthenticateUser
             var token = tokenProvider.ProvideToken(user);
             var refreshToken = tokenProvider.ProvideRefreshToken();
 
-            user.TokenManager.RefreshToken = refreshToken;
-            user.TokenManager.RefreshTokenExpiryToken = DateTime.UtcNow.AddHours(24);
+            user.SetRefreshTokenManager(refreshToken, DateTime.UtcNow.AddHours(24));
 
             await Context.UserRepository.UpdateAsync(user, user.Id);
             var commitStatus = await Context.CommitAsync();
@@ -45,7 +44,5 @@ namespace UserManagement.Application.Commands.Users.AuthenticateUser
 
             return (result == PasswordVerificationResult.Success) ? true : false;
         }
-
-        private ITokenProvider tokenProvider;
     }
 }

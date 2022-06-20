@@ -1,4 +1,5 @@
 ﻿using Shared.Application.ArchitectureBuilder.Commands;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UserManagement.Application.Commands.Users.AuthenticateUser;
@@ -13,7 +14,7 @@ namespace UserManagement.Application.Commands.Users.RevokeToken
         {
             var user = await Context.UserRepository.GetByEmailAsync(command.Email);
             if (user == null) return OperationResult.Failed("Invalid user");
-            user.TokenManager.RefreshToken = null;
+            user.SetRefreshTokenManager(null, DateTime.UtcNow);
 
             await Context.UserRepository.UpdateAsync(user, user.Id);
             var commitStatus = await Context.CommitAsync();

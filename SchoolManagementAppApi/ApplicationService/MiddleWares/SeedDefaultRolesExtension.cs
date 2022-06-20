@@ -27,7 +27,8 @@ namespace SchoolManagementAppApi.ApplicationService.MiddleWares
                     var mediator = scope.ServiceProvider.GetService<IMediator>();
                     var session = scope.ServiceProvider.GetService<INHibernateHelper>().OpenSession();
 
-                    if (session.Query<Role>().Count() <= 1)
+                    var dbRoleCount = session.Query<Role>().Count();
+                    if (dbRoleCount <= 1)
                     {
                         var permissions = session.Query<Permission>().ToList();
                         await PersistAcademicStaffRole(permissions, mediator);
@@ -39,7 +40,7 @@ namespace SchoolManagementAppApi.ApplicationService.MiddleWares
             }
             catch (Exception ex)
             {
-                throw new Exception("Internal server error, admin persistence failed");
+                throw new Exception("Internal server error, default role persistence failed");
             }
         }
 
@@ -90,7 +91,10 @@ namespace SchoolManagementAppApi.ApplicationService.MiddleWares
             {
                 PermissionIds = new List<Guid>()
                 {
-                    canFetchResults.Id,canFetchSubjects.Id,canFetchStudent.Id,canFetchRole.Id
+                    canFetchResults.Id,
+                    canFetchSubjects.Id,
+                    canFetchStudent.Id,
+                    canFetchRole.Id
                 },
                 
                 RoleId = createRoleResponse.Data.Id
@@ -105,7 +109,7 @@ namespace SchoolManagementAppApi.ApplicationService.MiddleWares
             var createRoleResponse = await mediator.ExecuteCommandAsync<CreateRoleCommand, CreateRoleCommandHandler, UserManagementDbContext, CommandResponse>(createRoleCommand);
 
             var canFetchStaff = permissions.First(permission => permission.Name == PermissionName.CAN_FETCH_NON_ACADEMICSTAFF);
-            var canFetchRole = permissions.First(permission => permission.Name == PermissionName.CAN_FETCH_ROLE);
+            var canFetchRole = permissions.FirstOrDefault(permission => permission.Name == PermissionName.CAN_FETCH_ROLE);
 
             var attachPermissionCommand = new AttachPermissionsCommand()
             {

@@ -16,8 +16,10 @@ using Shared.Infrastructure;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using UserManagement.Domain.Users;
 using UserManagement.Infrastructure;
 using UserManagement.Infrastructure.Mappings;
+using UserManagement.Infrastructure.Security;
 using UserManagement.Infrastructure.Security.TokenService;
 
 namespace SchoolManagementAppApi

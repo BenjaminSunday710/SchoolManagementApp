@@ -16,7 +16,7 @@ namespace UserManagement.Infrastructure.Mappings
             Component(x => x.TokenManager, member =>
             {
                 member.Map(m => m.RefreshToken);
-                member.Map(m => m.RefreshTokenExpiryToken);
+                member.Map(m => m.RefreshTokenExpiryTime);
             });
             HasManyToMany(x => x.Roles).Cascade.All().Table("UserRoles");
         }

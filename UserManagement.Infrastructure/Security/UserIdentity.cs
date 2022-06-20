@@ -27,7 +27,10 @@ namespace UserManagement.Infrastructure.Security
             UserId = id;
 
             var roleString = httpContext?.HttpContext?.User.Claims.FirstOrDefault(Claim => Claim.Type == "Roles")?.Value;
-            Roles = JsonConvert.DeserializeObject<List<RoleString>>(roleString);
+            if (roleString != null)
+                Roles = JsonConvert.DeserializeObject<List<RoleString>>(roleString);
+            else
+                Roles = null;
         }
 
         public string Email { get; set; }

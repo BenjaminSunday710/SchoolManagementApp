@@ -32,6 +32,11 @@ namespace UserManagement.Domain.Users
             _roles.Clear();
         }
 
+        public virtual void SetRefreshTokenManager(string refreshToken, DateTime refreshTokenExpiryTime)
+        {
+            TokenManager = new TokenManager(refreshToken, refreshTokenExpiryTime);
+        }
+
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }
         public virtual TokenManager TokenManager { get; set; }

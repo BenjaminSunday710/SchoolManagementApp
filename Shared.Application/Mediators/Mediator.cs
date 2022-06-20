@@ -42,7 +42,7 @@ namespace Shared.Application.Mediators
             }
             finally
             {
-                //sessionProvider.CloseSession();
+                sessionProvider.CloseSession();
             }
         }
 

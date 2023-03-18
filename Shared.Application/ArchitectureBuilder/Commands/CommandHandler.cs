@@ -14,7 +14,6 @@ namespace Shared.Application.ArchitectureBuilder.Commands
 
         public TDbContext Context { get; internal set; }
         public Operation<TResponse> OperationResult => new Operation<TResponse>();
-        public IServiceProvider ServiceProvider { get; internal set; }
     }
     
 }

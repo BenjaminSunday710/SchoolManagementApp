@@ -11,6 +11,12 @@ namespace SchoolManagementApp.Application.Commands.Students.CreateStudent
 {
     public class CreateStudentCommandHandler : CommandHandler<CreateStudentCommand, CoreDbContext, CommandResponse>
     {
+        private IUserIdentity currentUser;
+
+        public CreateStudentCommandHandler(IUserIdentity userIdentity)
+        {
+            currentUser = userIdentity;
+        }
         public async override Task<ActionResult<CommandResponse>> HandleAsync(CreateStudentCommand command, CancellationToken cancellationToken = default)
         {
             var school = await Context.SchoolRepository.GetByIdAsync(command.SchoolId);
@@ -35,7 +41,7 @@ namespace SchoolManagementApp.Application.Commands.Students.CreateStudent
             var person = personBuilder.Build();
 
             var student = new Student(person, school, schoolClass);
-            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            //var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
             student.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
             await Context.StudentRepository.AddAsync(student);

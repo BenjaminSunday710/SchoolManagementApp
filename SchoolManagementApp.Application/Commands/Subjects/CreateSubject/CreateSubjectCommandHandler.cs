@@ -10,6 +10,12 @@ namespace SchoolManagementApp.Application.Commands.Subjects.CreateSubject
 {
     public class CreateSubjectCommandHandler : CommandHandler<CreateSubjectCommand, CoreDbContext, CommandResponse>
     {
+        private IUserIdentity currentUser;
+
+        public CreateSubjectCommandHandler(IUserIdentity userIdentity)
+        {
+            currentUser = userIdentity;
+        }   
         public async override Task<ActionResult<CommandResponse>> HandleAsync(CreateSubjectCommand command, CancellationToken cancellationToken = default)
         {
             var schoolClass = await Context.SchoolClassRepository.GetByIdAsync(command.SchoolClassId);
@@ -20,7 +26,7 @@ namespace SchoolManagementApp.Application.Commands.Subjects.CreateSubject
 
             var subject = new Subject(command.Name, schoolClass);
 
-            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            //var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
             subject.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
             await Context.SubjectRepository.AddAsync(subject);

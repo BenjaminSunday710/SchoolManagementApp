@@ -11,6 +11,12 @@ namespace SchoolManagementApp.Application.Commands.AcademicStaffs.CreateAcademic
 {
     public class CreateAcademicStaffCommandHandler : CommandHandler<CreateAcademicStaffCommand, CoreDbContext, CommandResponse>
     {
+        private IUserIdentity currentUser;
+
+        public CreateAcademicStaffCommandHandler(IUserIdentity userIdentity)
+        {
+            currentUser = userIdentity;
+        }
         public async override Task<ActionResult<CommandResponse>> HandleAsync(CreateAcademicStaffCommand command, CancellationToken cancellationToken = default)
         {
             var school = await Context.SchoolRepository.GetByIdAsync(command.SchoolId);
@@ -30,7 +36,7 @@ namespace SchoolManagementApp.Application.Commands.AcademicStaffs.CreateAcademic
             var person = personBuilder.Build();
 
             var academicStaff = new AcademicStaff(person, school, command.Designation);
-            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            //var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
             academicStaff.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
             await Context.AcademicStaffRepository.AddAsync(academicStaff);

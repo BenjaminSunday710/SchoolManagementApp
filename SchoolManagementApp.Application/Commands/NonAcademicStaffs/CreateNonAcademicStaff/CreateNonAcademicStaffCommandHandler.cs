@@ -11,6 +11,12 @@ namespace SchoolManagementApp.Application.Commands.NonAcademicStaffs.CreateNonAc
 {
     public class CreateNonAcademicStaffCommandHandler : CommandHandler<CreateNonAcademicStaffCommand, CoreDbContext, CommandResponse>
     {
+        private IUserIdentity currentUser;
+
+        public CreateNonAcademicStaffCommandHandler(IUserIdentity userIdentity)
+        {
+            currentUser = userIdentity;
+        }
         public async override Task<ActionResult<CommandResponse>> HandleAsync(CreateNonAcademicStaffCommand command, CancellationToken cancellationToken = default)
         {
             var school = await Context.SchoolRepository.GetByIdAsync(command.SchoolId);
@@ -30,7 +36,7 @@ namespace SchoolManagementApp.Application.Commands.NonAcademicStaffs.CreateNonAc
             var person = personBuilder.Build();
 
             var nonAcademicStaff = new NonAcademicStaff(person, school, command.Unit, command.Designation);
-            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            //var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
             nonAcademicStaff.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
             await Context.NonAcademicStaffRepository.AddAsync(nonAcademicStaff);

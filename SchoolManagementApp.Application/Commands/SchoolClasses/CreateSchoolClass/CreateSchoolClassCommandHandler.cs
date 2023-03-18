@@ -10,6 +10,13 @@ namespace SchoolManagementApp.Application.Commands.SchoolClasses.CreateSchoolCla
 {
     public class CreateSchoolClassCommandHandler : CommandHandler<CreateSchoolClassCommand, CoreDbContext, CommandResponse>
     {
+        private IUserIdentity currentUser;
+
+        public CreateSchoolClassCommandHandler(IUserIdentity userIdentity)
+        {
+            currentUser = userIdentity;
+        }
+
         public async override Task<ActionResult<CommandResponse>> HandleAsync(CreateSchoolClassCommand command, CancellationToken cancellationToken = default)
         {
             var school = await Context.SchoolRepository.GetByIdAsync(command.SchoolId);
@@ -19,7 +26,7 @@ namespace SchoolManagementApp.Application.Commands.SchoolClasses.CreateSchoolCla
 
             var schoolClass = new SchoolClass(command.Name, school);
 
-            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            //var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
             schoolClass.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
             await Context.SchoolClassRepository.AddAsync(schoolClass);

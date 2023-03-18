@@ -11,6 +11,13 @@ namespace SchoolManagementApp.Application.Commands.Students.AssignSubjects
 {
     public class AssignStudentSubjectsCommandHandler : CommandHandler<AssignStudentSubjectsCommand, CoreDbContext, CommandResponse>
     {
+        private IUserIdentity currentUser;
+
+        public AssignStudentSubjectsCommandHandler(IUserIdentity userIdentity)
+        {
+            currentUser = userIdentity;
+        }
+
         public async override Task<ActionResult<CommandResponse>> HandleAsync(AssignStudentSubjectsCommand command, CancellationToken cancellationToken = default)
         {
             var errors = new List<string>();
@@ -24,7 +31,7 @@ namespace SchoolManagementApp.Application.Commands.Students.AssignSubjects
                 else student.OffersSubject(subject);
             }
 
-            var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            //var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
             student.LastModifiedBy = $"{currentUser.FirstName} {currentUser.LastName}";
             student.LastModified = DateTime.UtcNow;
             await Context.StudentRepository.UpdateAsync(student, student.Id);

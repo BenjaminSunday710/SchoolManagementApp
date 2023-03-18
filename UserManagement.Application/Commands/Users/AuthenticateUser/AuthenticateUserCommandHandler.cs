@@ -19,9 +19,9 @@ namespace UserManagement.Application.Commands.Users.AuthenticateUser
 
             if (!IsValidPassword(user, command.Password)) return OperationResult.Failed($"provided password is incorrect");
 
-            var tokenProvider = (ITokenProvider)ServiceProvider.GetService(typeof(ITokenProvider));
-            var token = tokenProvider.ProvideToken(user);
-            var refreshToken = tokenProvider.ProvideRefreshToken();
+            //var tokenProvider = (ITokenProvider)ServiceProvider.GetService(typeof(ITokenProvider));
+            var token = TokenProvider.ProvideToken(user);
+            var refreshToken = TokenProvider.ProvideRefreshToken();
 
             user.SetRefreshTokenManager(refreshToken, DateTime.UtcNow.AddHours(24));
 
@@ -44,5 +44,7 @@ namespace UserManagement.Application.Commands.Users.AuthenticateUser
 
             return (result == PasswordVerificationResult.Success) ? true : false;
         }
+
+        public ITokenProvider TokenProvider { get; set; }
     }
 }

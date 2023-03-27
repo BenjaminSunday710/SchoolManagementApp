@@ -2,11 +2,11 @@
 {
     public enum ErrorCode
     {
-        BadRequest, 
-        UnAuthorized, 
-        NotFound, 
-        InternalServerError, 
-        Ok
+        BadRequest=400, 
+        UnAuthorized=403, 
+        NotFound=404, 
+        InternalServerError=500, 
+        Ok=200
     }
 }
 

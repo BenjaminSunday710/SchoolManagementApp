@@ -10,7 +10,7 @@ namespace Shared.Application.ArchitectureBuilder.Queries
         where TEntity:IEntity<TId>
     {
         public abstract Task<ActionResult<TResponse>> HandleAsync(CancellationToken cancellationToken = default);
-        public Operation<TResponse> OperationResult = new Operation<TResponse>();
+        public OperationResult<TResponse> OperationResult = new OperationResult<TResponse>();
         public IReadOnlyRepository<TEntity,TId> QueryContext { get; internal set; }
     }
 
@@ -19,7 +19,7 @@ namespace Shared.Application.ArchitectureBuilder.Queries
         where TEntity : IEntity<TId>
     {
         public abstract Task<ActionResult<TResponse>> HandleAsync(TQuery query, CancellationToken cancellationToken = default);
-        public Operation<TResponse> OperationResult = new Operation<TResponse>();
+        public OperationResult<TResponse> OperationResult = new OperationResult<TResponse>();
         public IReadOnlyRepository<TEntity, TId> QueryContext { get; internal set; } 
     }
 }

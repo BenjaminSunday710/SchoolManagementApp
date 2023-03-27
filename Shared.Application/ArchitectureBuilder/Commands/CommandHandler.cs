@@ -13,7 +13,7 @@ namespace Shared.Application.ArchitectureBuilder.Commands
         public abstract Task<ActionResult<TResponse>> HandleAsync(TCommand command, CancellationToken cancellationToken = default);
 
         public TDbContext Context { get; internal set; }
-        public Operation<TResponse> OperationResult => new Operation<TResponse>();
+        public OperationResult<TResponse> OperationResult => new OperationResult<TResponse>();
     }
     
 }

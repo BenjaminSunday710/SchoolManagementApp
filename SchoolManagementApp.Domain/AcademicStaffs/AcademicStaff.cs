@@ -20,6 +20,7 @@ namespace SchoolManagementApp.Domain.AcademicStaffs
             Address = person.Address;
             Designation = designation;
             PhoneNumber = person.PhoneNumber;
+            school.EmployAcademicStaff(this);
         }
 
         public virtual void AssignSubject(Subject subject)

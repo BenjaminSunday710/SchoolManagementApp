@@ -3,7 +3,7 @@ using Utilities.Result.Util;
 
 namespace Shared.Application.ArchitectureBuilder
 {
-    public class Operation<TResponse>
+    public class OperationResult<TResponse>
     {
         public ActionResult<TResponse> Failed(string error)
         {

@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using SchoolManagementApp.Infrastructure.Mappings;
 using SchoolManagementAppApi.ApplicationService.Authorizations;
 using SchoolManagementAppApi.ApplicationService.MiddleWares;
+using SchoolManagementAppApi.Controllers;
 using Shared.Application.Mediator;
 using Shared.Application.Mediators;
 using Shared.Infrastructure;
@@ -31,6 +32,7 @@ namespace SchoolManagementAppApi
             var environment = env.IsDevelopment() ? "Development" : "Production";
             Configuration = new ConfigurationBuilder()
                 .AddJsonFile($"appsettings.{environment}.json")
+                .AddJsonFile("nigeria-states-and-local-govts.json")
                 .Build();
         }
 
@@ -41,7 +43,13 @@ namespace SchoolManagementAppApi
         {
             var connectionString = Configuration.GetValue<string>("DefaultConnection");
 
+            var nigStates = Configuration.GetValue(typeof(NigeriaStates_and_LgasOptions), "NigeriaStatesAndLgas");
+            var states = new NigeriaStates_and_LgasOptions();
+            Configuration.GetSection("NigeriaStatesAndLgas").Bind(states);
+
+            services.Configure<NigeriaStates_and_LgasOptions>(Configuration.GetSection("NigeriaStatesAndLgas"));
             services.AddHttpContextAccessor();
+            services.AddCors();
 
             var userMgtMapAssembly = Assembly.GetAssembly(typeof(UserMap));
             var coreModuleMapAssembly = Assembly.GetAssembly(typeof(SchoolMap));

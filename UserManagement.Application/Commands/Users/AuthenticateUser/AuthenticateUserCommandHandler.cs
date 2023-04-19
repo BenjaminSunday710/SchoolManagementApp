@@ -32,7 +32,13 @@ namespace UserManagement.Application.Commands.Users.AuthenticateUser
             var response = new AuthenticatedUserResponse()
             {
                 Token = token,
-                User = user,
+                User = new UserDto
+                {
+                    UserId=user.Id,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                },
                 RefreshToken = refreshToken,
             };
             return OperationResult.Successful(response);

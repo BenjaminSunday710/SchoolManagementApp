@@ -7,11 +7,11 @@ namespace UserManagement.Domain.Users
         protected TokenManager() { }
         public TokenManager(string token, DateTime refreshTokenExpiryTime)
         {
-            RefreshedToken = token;
-            RefreshedTokenExpiryTime = refreshTokenExpiryTime;
+            RefreshToken = token;
+            RefreshTokenExpiryTime = refreshTokenExpiryTime;
         }
 
-        public virtual string RefreshedToken { get; protected set; }
-        public virtual DateTime RefreshedTokenExpiryTime { get; protected set; }
+        public virtual string RefreshToken { get; protected set; }
+        public virtual DateTime RefreshTokenExpiryTime { get; protected set; }
     }
 }

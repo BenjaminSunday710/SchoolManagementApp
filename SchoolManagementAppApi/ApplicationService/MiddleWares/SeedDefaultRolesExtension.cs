@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UserManagement.Application.Commands.Roles.AttachPermissions;
+using UserManagement.Application.Commands.Permissions.AttachPermissions;
 using UserManagement.Application.Commands.Roles.CreateRole;
 using UserManagement.Domain.Permissions;
 using UserManagement.Domain.Roles;

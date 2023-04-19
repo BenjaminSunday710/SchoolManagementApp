@@ -27,7 +27,7 @@ namespace UserManagement.Application.Commands.Users.RefreshToken
             var principal = tokenProvider.ProvidePrincipalFromExpiredToken(command.AccessToken);
             var userEmail = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
             var user = await Context.UserRepository.GetByEmailAsync(userEmail);
-            if (user == null || user.TokenManager.RefreshedToken != command.RefreshToken || user.TokenManager.RefreshedTokenExpiryTime <=DateTime.UtcNow) 
+            if (user == null || user.TokenManager.RefreshToken != command.RefreshToken || user.TokenManager.RefreshTokenExpiryTime <=DateTime.UtcNow) 
                 return OperationResult.Failed("Invalid user");
 
             var newAccessToken = tokenProvider.ProvideToken(user);
@@ -42,7 +42,13 @@ namespace UserManagement.Application.Commands.Users.RefreshToken
             var response = new AuthenticatedUserResponse()
             {
                 Token = newAccessToken,
-                User = user,
+                User = new UserDto
+                {
+                    UserId = user.Id,
+                    LastName = user.LastName,
+                    FirstName = user.FirstName,
+                    Email = user.Email
+                },
                 RefreshToken = newRefreshToken,
             };
             return OperationResult.Successful(response);

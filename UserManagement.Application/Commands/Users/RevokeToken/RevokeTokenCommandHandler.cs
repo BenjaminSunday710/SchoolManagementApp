@@ -3,6 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UserManagement.Application.Commands.Users.AuthenticateUser;
+using UserManagement.Domain.Users;
 using UserManagement.Infrastructure.Context;
 using Utilities.Result.Util;
 
@@ -23,7 +24,13 @@ namespace UserManagement.Application.Commands.Users.RevokeToken
             var response = new AuthenticatedUserResponse()
             {
                 Token = null,
-                User = user,
+                User = new UserDto
+                {
+                    Email= user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    UserId=user.Id
+                },
                 RefreshToken = null,
             };
             return OperationResult.Successful(response);

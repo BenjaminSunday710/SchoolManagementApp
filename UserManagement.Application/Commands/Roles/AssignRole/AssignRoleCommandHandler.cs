@@ -5,7 +5,7 @@ using UserManagement.Domain.Users;
 using UserManagement.Infrastructure.Context;
 using Utilities.Result.Util;
 
-namespace UserManagement.Application.Commands.Users.AssignRole
+namespace UserManagement.Application.Commands.Roles.AssignRole
 {
     public class AssignRoleCommandHandler : CommandHandler<AssignRoleCommand, UserManagementDbContext, CommandResponse>
     {

@@ -3,9 +3,9 @@ using System;
 using Utilities.Result.Util;
 using Utilities.Validations;
 
-namespace UserManagement.Application.Commands.Users.AssignRole
+namespace UserManagement.Application.Commands.Roles.AssignRole
 {
-    public class AssignRoleCommand:Command
+    public class AssignRoleCommand : Command
     {
         protected override ActionResult Validate()
         {

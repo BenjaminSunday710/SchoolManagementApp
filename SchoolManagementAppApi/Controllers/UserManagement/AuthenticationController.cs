@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Application.ArchitectureBuilder.Commands;
 using Shared.Application.Mediator;
 using System.Threading.Tasks;
 using UserManagement.Application.Commands.Users.AuthenticateUser;
 using UserManagement.Application.Commands.Users.RefreshToken;
+using UserManagement.Application.Commands.Users.RegisterUser;
 using UserManagement.Application.Commands.Users.RevokeToken;
 using UserManagement.Infrastructure.Context;
 
@@ -24,15 +26,18 @@ namespace SchoolManagementAppApi.Controllers.UserManagement
 
             if (authenticatedUser.NotSuccessful) return Unauthorized(authenticatedUser.Errors);
 
-            var user = authenticatedUser.Data.User;
+            return Ok(authenticatedUser);
+        }
 
-            return Ok(new { 
-                UserId = user.Id, 
-                Token = authenticatedUser.Data.Token, 
-                RefreshToken = authenticatedUser.Data.RefreshToken 
-            });
-        } 
-        
+        [HttpPost("register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RegisterUser(RegisterUserCommand command)
+        {
+            var registerUser = await Mediator.ExecuteCommandAsync<RegisterUserCommand, RegisterUserCommandHandler, UserManagementDbContext, CommandResponse>(command);
+
+            return Ok(registerUser);
+        }
+
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken(RefreshTokenCommand command)
         {
@@ -40,13 +45,7 @@ namespace SchoolManagementAppApi.Controllers.UserManagement
 
             if (refreshedToken.NotSuccessful) return Unauthorized(refreshedToken.Errors);
 
-            var user = refreshedToken.Data.User;
-
-            return Ok(new { 
-                UserId = user.Id, 
-                Token = refreshedToken.Data.Token, 
-                RefreshToken = refreshedToken.Data.RefreshToken 
-            });
+            return Ok(refreshedToken.Data);
         } 
         
         [HttpPost("revoke-token")]
@@ -68,3 +67,4 @@ namespace SchoolManagementAppApi.Controllers.UserManagement
         }
     }
 }
+    

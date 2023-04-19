@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UserManagement.Application.Commands.Roles.CreateRole;
 using UserManagement.Application.Queries.Roles.FetchRole;
-using UserManagement.Application.Queries.Roles.FetchRolePermissions;
 using UserManagement.Application.Queries.Roles.FetchRoles;
 using UserManagement.Application.Queries.SharedResponses;
 using UserManagement.Domain.Roles;
@@ -30,15 +29,15 @@ namespace SchoolManagementAppApi.Controllers.UserManagement
         }
 
         [HttpGet]
-        [Permission(PermissionName.CAN_FETCH_ROLES)]
+        //[Permission(PermissionName.CAN_FETCH_ROLES)]
         public async Task<IActionResult> FetchRoles()
         {
             var response = await Mediator.SendQueryAsync<Role, FetchRolesQueryHandler, List<RoleResponse>>();
             return response.ResponseResult();
         }
 
-        [HttpGet("userId")]
-        [Permission(PermissionName.CAN_FETCH_USER_ROLES)]
+        [HttpGet("{userId}")]
+        //[Permission(PermissionName.CAN_FETCH_USER_ROLES)]
         public async Task<IActionResult> FetchRole(Guid userId)
         {
             var query = new FetchRoleQuery() { UserId = userId };
@@ -46,13 +45,5 @@ namespace SchoolManagementAppApi.Controllers.UserManagement
             return response.ResponseResult();
         }
 
-        [HttpGet("permissions")]
-        [Permission(PermissionName.CAN_FETCH_ROLE_PERMISSIONS)]
-        public async Task<IActionResult> FetchRolePermissions(Guid id)
-        {
-            var query = new FetchRolePermissionsQuery() { RoleId = id };
-            var response = await Mediator.SendQueryAsync<Role, FetchRolePermissionsQuery, FetchRolePermissionsQueryHandler, List<PermissionResponse>>(query);
-            return response.ResponseResult();
-        }
     }
 }

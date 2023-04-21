@@ -6,5 +6,6 @@ namespace SchoolManagementApp.Domain.SharedKernel
     {
         public virtual string Designation { get; set; }
         public virtual School School { get; set; }
+        public virtual string EmploymentId { get; set; }
     }
 }

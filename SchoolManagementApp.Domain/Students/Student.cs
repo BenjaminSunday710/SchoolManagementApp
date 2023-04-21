@@ -100,6 +100,7 @@ namespace SchoolManagementApp.Domain.Students
             }
         }
 
+        public virtual string RegistrationId { get; set; }
         public virtual SchoolClass SchoolClass { get; set; }
         public virtual School School { get; set; }
 

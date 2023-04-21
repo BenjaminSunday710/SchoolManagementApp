@@ -9,7 +9,7 @@ using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Commands.AcademicStaffs.CreateAcademicStaff
 {
-    public class CreateAcademicStaffCommandHandler : CommandHandler<CreateAcademicStaffCommand, CoreDbContext, CommandResponse>
+    public class CreateAcademicStaffCommandHandler : CommandHandler<CreateAcademicStaffCommand, CoreDbContext, CreateAcademicStaffResponse>
     {
         private IUserIdentity currentUser;
 
@@ -17,7 +17,7 @@ namespace SchoolManagementApp.Application.Commands.AcademicStaffs.CreateAcademic
         {
             currentUser = userIdentity;
         }
-        public async override Task<ActionResult<CommandResponse>> HandleAsync(CreateAcademicStaffCommand command, CancellationToken cancellationToken = default)
+        public async override Task<ActionResult<CreateAcademicStaffResponse>> HandleAsync(CreateAcademicStaffCommand command, CancellationToken cancellationToken = default)
         {
             var school = await Context.SchoolRepository.GetByIdAsync(command.SchoolId);
 
@@ -36,16 +36,25 @@ namespace SchoolManagementApp.Application.Commands.AcademicStaffs.CreateAcademic
             var person = personBuilder.Build();
 
             var academicStaff = new AcademicStaff(person, school, command.Designation);
-            //var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
+            academicStaff.EmploymentId = $@"{school.StaffIdFormat}/{school.LastStaffIdIndex + 1}";
+            school.LastStaffIdIndex += 1;
             academicStaff.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
-            await Context.AcademicStaffRepository.AddAsync(academicStaff);
+            school.EmployAcademicStaff(academicStaff);
+
+            await Context.SchoolRepository.UpdateAsync(school, school.Id);
             var commitStatus = await Context.CommitAsync();
 
             if (commitStatus.NotSuccessful)
-                return OperationResult.Failed("Unable to create staff");
+                return OperationResult.Failed("Unable to employ academic staff");
 
-            return OperationResult.Successful(new CommandResponse(academicStaff.Id));
+            var response = new CreateAcademicStaffResponse
+            {
+                EmploymentId = academicStaff.EmploymentId,
+                Id = academicStaff.Id
+            };
+
+            return OperationResult.Successful(response);
         }
     }
 }

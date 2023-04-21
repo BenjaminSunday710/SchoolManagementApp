@@ -1,4 +1,6 @@
-﻿using SchoolManagementApp.Domain.SharedKernel.Persons;
+﻿using SchoolManagementApp.Application.Commands.NonAcademicStaffs.CreateNonAcademicStaff;
+using SchoolManagementApp.Domain.NonAcademicStaffs;
+using SchoolManagementApp.Domain.SharedKernel.Persons;
 using SchoolManagementApp.Domain.Students;
 using SchoolManagementApp.Infrastructure.Context;
 using Shared.Application.ArchitectureBuilder.Commands;
@@ -9,7 +11,7 @@ using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Commands.Students.CreateStudent
 {
-    public class CreateStudentCommandHandler : CommandHandler<CreateStudentCommand, CoreDbContext, CommandResponse>
+    public class CreateStudentCommandHandler : CommandHandler<CreateStudentCommand, CoreDbContext, CreateStudentResponse>
     {
         private IUserIdentity currentUser;
 
@@ -17,7 +19,7 @@ namespace SchoolManagementApp.Application.Commands.Students.CreateStudent
         {
             currentUser = userIdentity;
         }
-        public async override Task<ActionResult<CommandResponse>> HandleAsync(CreateStudentCommand command, CancellationToken cancellationToken = default)
+        public async override Task<ActionResult<CreateStudentResponse>> HandleAsync(CreateStudentCommand command, CancellationToken cancellationToken = default)
         {
             var school = await Context.SchoolRepository.GetByIdAsync(command.SchoolId);
 
@@ -41,16 +43,26 @@ namespace SchoolManagementApp.Application.Commands.Students.CreateStudent
             var person = personBuilder.Build();
 
             var student = new Student(person, school, schoolClass);
-            //var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
             student.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
-            await Context.StudentRepository.AddAsync(student);
+            student.RegistrationId = $@"{school.StudentIdFormat}/{school.LastStudentIdIndex + 1}";
+            school.LastStudentIdIndex += 1;
+
+            school.RegisterStudent(student);
+
+            await Context.SchoolRepository.UpdateAsync(school, school.Id);
             var commitStatus = await Context.CommitAsync();
 
             if (commitStatus.NotSuccessful)
-                return OperationResult.Failed("Unable to create student");
+                return OperationResult.Failed("Unable to register student");
 
-            return OperationResult.Successful(new CommandResponse(student.Id));
+            var response = new CreateStudentResponse
+            {
+                RegistrationId = student.RegistrationId,
+                Id = student.Id
+            };
+
+            return OperationResult.Successful(response);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using SchoolManagementApp.Domain.NonAcademicStaffs;
+﻿using SchoolManagementApp.Application.Commands.AcademicStaffs.CreateAcademicStaff;
+using SchoolManagementApp.Domain.AcademicStaffs;
+using SchoolManagementApp.Domain.NonAcademicStaffs;
 using SchoolManagementApp.Domain.SharedKernel.Persons;
 using SchoolManagementApp.Infrastructure.Context;
 using Shared.Application.ArchitectureBuilder.Commands;
@@ -9,7 +11,7 @@ using Utilities.Result.Util;
 
 namespace SchoolManagementApp.Application.Commands.NonAcademicStaffs.CreateNonAcademicStaff
 {
-    public class CreateNonAcademicStaffCommandHandler : CommandHandler<CreateNonAcademicStaffCommand, CoreDbContext, CommandResponse>
+    public class CreateNonAcademicStaffCommandHandler : CommandHandler<CreateNonAcademicStaffCommand, CoreDbContext, CreateNonAcademicStaffResponse>
     {
         private IUserIdentity currentUser;
 
@@ -17,7 +19,7 @@ namespace SchoolManagementApp.Application.Commands.NonAcademicStaffs.CreateNonAc
         {
             currentUser = userIdentity;
         }
-        public async override Task<ActionResult<CommandResponse>> HandleAsync(CreateNonAcademicStaffCommand command, CancellationToken cancellationToken = default)
+        public async override Task<ActionResult<CreateNonAcademicStaffResponse>> HandleAsync(CreateNonAcademicStaffCommand command, CancellationToken cancellationToken = default)
         {
             var school = await Context.SchoolRepository.GetByIdAsync(command.SchoolId);
 
@@ -36,16 +38,26 @@ namespace SchoolManagementApp.Application.Commands.NonAcademicStaffs.CreateNonAc
             var person = personBuilder.Build();
 
             var nonAcademicStaff = new NonAcademicStaff(person, school, command.Unit, command.Designation);
-            //var currentUser = (IUserIdentity)ServiceProvider.GetService(typeof(IUserIdentity));
             nonAcademicStaff.CreatedBy = $"{currentUser.FirstName} {currentUser.LastName}";
 
-            await Context.NonAcademicStaffRepository.AddAsync(nonAcademicStaff);
+            nonAcademicStaff.EmploymentId = $@"{school.StaffIdFormat}/{school.LastStaffIdIndex + 1}";
+            school.LastStaffIdIndex += 1;
+
+            school.EmployNonAcademicStaff(nonAcademicStaff);
+
+            await Context.SchoolRepository.UpdateAsync(school, school.Id);
             var commitStatus = await Context.CommitAsync();
 
             if (commitStatus.NotSuccessful)
-                return OperationResult.Failed("Unable to create staff");
+                return OperationResult.Failed("Unable to employ non-academic staff");
 
-            return OperationResult.Successful(new CommandResponse(nonAcademicStaff.Id));
+            var response = new CreateNonAcademicStaffResponse
+            {
+                EmploymentId = nonAcademicStaff.EmploymentId,
+                Id = nonAcademicStaff.Id
+            };
+
+            return OperationResult.Successful(response);
         }
     }
 }

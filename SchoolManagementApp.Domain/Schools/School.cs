@@ -129,6 +129,10 @@ namespace SchoolManagementApp.Domain.Schools
 
         public virtual string Name { get; set; }
         public virtual string Website { get; set; }
+        public virtual string StaffIdFormat { get; set; }
+        public virtual string StudentIdFormat { get; set; }
+        public virtual int LastStaffIdIndex { get; set; }
+        public virtual int LastStudentIdIndex { get; set; }
         public virtual Address Location { get; set; }
 
 

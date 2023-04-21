@@ -18,6 +18,7 @@ namespace SchoolManagementApp.Infrastructure.Mappings
             Map(x => x.Gender).CustomType<GenericEnumMapper<Gender>>().Not.Nullable();
             Map(x => x.PhoneNumber);
             Map(x => x.Designation);
+            Map(x => x.EmploymentId);
             Component(x => x.Address,
                 member =>
                 {

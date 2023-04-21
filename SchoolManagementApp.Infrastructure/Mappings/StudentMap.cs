@@ -16,6 +16,7 @@ namespace SchoolManagementApp.Infrastructure.Mappings
             Map(x => x.DateOfBirth);
             Map(x => x.Gender);
             Map(x => x.PhoneNumber);
+            Map(x => x.RegistrationId);
             Component(x => x.Address,
                 member =>
                 {

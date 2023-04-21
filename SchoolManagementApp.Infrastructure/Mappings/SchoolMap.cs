@@ -11,6 +11,10 @@ namespace SchoolManagementApp.Infrastructure.Mappings
         {
             Table("Schools");
             Map(x => x.Name);
+            Map(x => x.StaffIdFormat);
+            Map(x => x.StudentIdFormat);
+            Map(x => x.LastStaffIdIndex);
+            Map(x => x.LastStudentIdIndex);
             Component(x => x.Location,
                 member =>
                 {

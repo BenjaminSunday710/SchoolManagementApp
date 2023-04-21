@@ -19,6 +19,7 @@ namespace SchoolManagementApp.Infrastructure.Mappings
             Map(x => x.PhoneNumber);
             Map(x => x.Unit).CustomType<GenericEnumMapper<Unit>>().Not.Nullable();
             Map(x => x.Designation);
+            Map(x => x.EmploymentId);
             Component(x => x.Address,
                 member =>
                 {

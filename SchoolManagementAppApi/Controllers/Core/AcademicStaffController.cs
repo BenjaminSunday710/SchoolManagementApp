@@ -25,7 +25,7 @@ namespace SchoolManagementAppApi.Controllers.Core
         [Permission(PermissionName.CAN_CREATE_ACADEMICSTAFF)]
         public async Task<IActionResult> CreateAcademicStaff(CreateAcademicStaffCommand command)
         {
-            var createAction = await Mediator.ExecuteCommandAsync<CreateAcademicStaffCommand, CreateAcademicStaffCommandHandler,CoreDbContext,CommandResponse>(command);
+            var createAction = await Mediator.ExecuteCommandAsync<CreateAcademicStaffCommand, CreateAcademicStaffCommandHandler,CoreDbContext,CreateAcademicStaffResponse>(command);
             return createAction.ResponseResult();
         }
 

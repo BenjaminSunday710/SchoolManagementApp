@@ -22,7 +22,7 @@ namespace SchoolManagementAppApi.Controllers.Core
         [Permission(PermissionName.CAN_CREATE_NON_ACADEMICSTAFF)]
         public async Task<IActionResult> CreateNonAcademicStaff(CreateNonAcademicStaffCommand command)
         {
-            var createAction = await Mediator.ExecuteCommandAsync<CreateNonAcademicStaffCommand, CreateNonAcademicStaffCommandHandler, CoreDbContext,CommandResponse>(command);
+            var createAction = await Mediator.ExecuteCommandAsync<CreateNonAcademicStaffCommand, CreateNonAcademicStaffCommandHandler, CoreDbContext,CreateNonAcademicStaffResponse>(command);
             return createAction.ResponseResult();
         }
 

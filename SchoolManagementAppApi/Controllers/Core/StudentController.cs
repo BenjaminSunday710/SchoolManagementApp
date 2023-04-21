@@ -26,7 +26,7 @@ namespace SchoolManagementAppApi.Controllers.Core
         [Permission(PermissionName.CAN_REGISTER_STUDENT)]
         public async Task<IActionResult> CreateStudent(CreateStudentCommand command)
         {
-            var createAction = await Mediator.ExecuteCommandAsync<CreateStudentCommand, CreateStudentCommandHandler, CoreDbContext, CommandResponse>(command);
+            var createAction = await Mediator.ExecuteCommandAsync<CreateStudentCommand, CreateStudentCommandHandler, CoreDbContext, CreateStudentResponse>(command);
             return createAction.ResponseResult();
         }
 

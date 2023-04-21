@@ -21,7 +21,7 @@ namespace SchoolManagementAppApi.Controllers
         [HttpGet]
         public async Task<IActionResult> FetchStates()
         {
-            return Ok(Task.Run(() =>
+            return Ok(await Task.Run(() =>
             {
                 return _options.Value.States;
 
@@ -31,7 +31,7 @@ namespace SchoolManagementAppApi.Controllers
         [HttpGet("{name}")]
         public async Task<IActionResult> FetchStateLgas(string name)
         {
-            return Ok(Task.Run(() =>
+            return Ok(await Task.Run(() =>
             {
                 var state = _options.Value.States.FirstOrDefault(x => x.Name == name);
                 return state.Lgas;

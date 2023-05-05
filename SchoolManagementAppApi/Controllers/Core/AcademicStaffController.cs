@@ -21,7 +21,7 @@ namespace SchoolManagementAppApi.Controllers.Core
     {
         public AcademicStaffController(IMediator mediator) : base(mediator) { }
 
-        [HttpPost]
+        [HttpPost("create")]
         [Permission(PermissionName.CAN_CREATE_ACADEMICSTAFF)]
         public async Task<IActionResult> CreateAcademicStaff(CreateAcademicStaffCommand command)
         {

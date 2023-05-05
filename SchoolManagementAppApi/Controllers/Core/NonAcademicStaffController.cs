@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagementAppApi.Controllers.Core
 {
-    [Route("staff/nonAcademics")]
+    [Route("staff/non-academics")]
     public class NonAcademicStaffController:ApiController
     {
         public NonAcademicStaffController(IMediator mediator) : base(mediator) { }

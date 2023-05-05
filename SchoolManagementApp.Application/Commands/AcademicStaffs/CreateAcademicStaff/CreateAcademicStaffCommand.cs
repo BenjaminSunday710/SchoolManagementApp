@@ -19,7 +19,7 @@ namespace SchoolManagementApp.Application.Commands.AcademicStaffs.CreateAcademic
                 .IsValidText(LG_of_Origin, "Invalid LG_of_Origin")
                 .IsValidText(State_of_Origin, "Invalid State_of_Origin")
                 .IsValidEmail(Email, "Invalid email")
-                .IsValidGender(Gender.ToString(), "Invalid gender")
+                .IsValidGender(Gender, "Invalid gender")
                 .IsValidText(PhoneNumber, "Invalid phone number")
                 .IsValidGuid(SchoolId, "Invalid school Id")
                 .Result;
@@ -31,7 +31,7 @@ namespace SchoolManagementApp.Application.Commands.AcademicStaffs.CreateAcademic
         public string Street { get; set; }
         public string City { get; set; }
         public string Email { get; set; }
-        public Gender Gender { get; set; }
+        public string Gender { get; set; }
         public string PhoneNumber { get; set; }
         public string Designation { get; set; }
         public string LG_of_Origin { get; set; }

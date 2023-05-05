@@ -25,12 +25,12 @@ namespace Shared.Application.Mediators.DependencyManagers
 
             for (int i = 0; i < paramInfos.Length; i++)
             {
-                var paramType = paramInfos[i].GetType();
+                var paramType = paramInfos[i].ParameterType;
                 if (!paramType.IsInterface) throw new ArgumentException("invalid constructor parameter");
 
-                var paramConcType = serviceProvider.GetService(paramType);
-                if (paramConcType == null) throw new ArgumentException("required type is not registered");
-                parameters[i] = paramConcType;
+                var paramImplementation = serviceProvider.GetService(paramType);
+                if (paramImplementation == null) throw new ArgumentException("required type is not registered");
+                parameters[i] = paramImplementation;
             }
             return parameters;
         }

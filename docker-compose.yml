@@ -1,8 +1,0 @@
-version: '3.4'
-
-services:
-  schoolmanagementappapi:
-    image: ${DOCKER_REGISTRY-}schoolmanagementappapi
-    build:
-      context: .
-      dockerfile: SchoolManagementAppApi\Dockerfile

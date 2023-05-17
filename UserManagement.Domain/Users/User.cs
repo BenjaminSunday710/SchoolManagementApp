@@ -23,10 +23,7 @@ namespace UserManagement.Domain.Users
             _roles.Add(role);
         }
 
-        public virtual void ResignRole(Role role)
-        {
-            _roles.Remove(role);
-        }
+        public virtual void ResignRole(Role role) => _roles.Remove(role);
         public virtual void ClearRoles()
         {
             _roles.Clear();
